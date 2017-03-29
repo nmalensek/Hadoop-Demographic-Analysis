@@ -64,16 +64,31 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                 }
 
                 //question 3a females
-
+                int hispanicFemalesUnder18 = 0;
+                int hispanicFemaleStartPosition = 4143;
+                for (int i = 0; i < 13; i++) {
+                    hispanicFemalesUnder18 += Integer.parseInt(
+                            line.substring(hispanicFemaleStartPosition, hispanicFemaleStartPosition + 9));
+                    hispanicFemaleStartPosition += 9;
+                }
                 
 
                 //question 3b males
                 int hispanicMales19to29 = 0;
                 int hispanicMale19to29StartPosition = 3981;
                 for (int i = 0; i < 5; i++) {
-                    hispanicMalesUnder18 += Integer.parseInt(
+                    hispanicMales19to29 += Integer.parseInt(
                             line.substring(hispanicMale19to29StartPosition, hispanicMale19to29StartPosition + 9));
                     hispanicMaleStartPosition += 9;
+                }
+                //TODO change start position!
+                //question 3b females
+                int hispanicFemales19to29 = 0;
+                int hispanicFemale19to29StartPosition = 3981;
+                for (int i = 0; i < 5; i++) {
+                    hispanicFemales19to29 += Integer.parseInt(
+                            line.substring(hispanicFemale19to29StartPosition, hispanicFemale19to29StartPosition + 9));
+                    hispanicFemale19to29StartPosition += 9;
                 }
 
                 //question 3c males
