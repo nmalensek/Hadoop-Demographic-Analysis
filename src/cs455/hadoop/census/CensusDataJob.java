@@ -35,12 +35,13 @@ public class CensusDataJob {
             conf.set("mapreduce.output.textoutputformat.separator", ":");
             // Give the MapRed job a name. You'll see this name in the Yarn webapp.
             Job job = Job.getInstance(conf, "census data analysis");
+//            job.setNumReduceTasks(2);
             // Current class.
             job.setJarByClass(CensusDataJob.class);
             // Mapper
             job.setMapperClass(CensusDataMapper.class);
             // Combiner. We use the reducer as the combiner in this case.
-//            job.setCombinerClass(CensusDataReducer.class);
+            job.setCombinerClass(CensusDataCombiner.class);
             // Reducer
             job.setReducerClass(CensusDataReducer.class);
             // Outputs from the Mapper.

@@ -53,6 +53,33 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                 mapMultiple.setMarriageableMales(totalMarriageableMales);
                 mapMultiple.setFemaleNeverMarried(femaleNeverMarried);
                 mapMultiple.setMarriageableFemales(totalMarriageableFemales);
+
+                //question 3a males
+                int hispanicMalesUnder18 = 0;
+                int hispanicMaleStartPosition = 3864;
+                for (int i = 0; i < 13; i++) {
+                    hispanicMalesUnder18 += Integer.parseInt(
+                            line.substring(hispanicMaleStartPosition, hispanicMaleStartPosition + 9));
+                    hispanicMaleStartPosition += 9;
+                }
+
+                //question 3a females
+
+                
+
+                //question 3b males
+                int hispanicMales19to29 = 0;
+                int hispanicMale19to29StartPosition = 3981;
+                for (int i = 0; i < 5; i++) {
+                    hispanicMalesUnder18 += Integer.parseInt(
+                            line.substring(hispanicMale19to29StartPosition, hispanicMale19to29StartPosition + 9));
+                    hispanicMaleStartPosition += 9;
+                }
+
+                //question 3c males
+                int hispanicMales30to34 = Integer.parseInt(line.substring(4026, 4035));
+                int hispanicMales35to39 = Integer.parseInt(line.substring(4035, 4044));
+                int hispanicMales30to39 = hispanicMales30to34 + hispanicMales35to39;
             }
 
             if(logicalPartNumber == 2) {
@@ -62,6 +89,14 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                 int rent = Integer.parseInt(line.substring(1812, 1821));
                 mapMultiple.setOwn(own);
                 mapMultiple.setRent(rent);
+
+                //question 4: urban vs rural
+                int inUrban = Integer.parseInt(line.substring(1821, 1830));
+                int outUrban = Integer.parseInt(line.substring(1830, 1839));
+                int rural = Integer.parseInt(line.substring(1839, 1848));
+                mapMultiple.setInsideUrban(inUrban);
+                mapMultiple.setOutsideUrban(outUrban);
+                mapMultiple.setRural(rural);
             }
 
             context.write(new Text(state), mapMultiple);

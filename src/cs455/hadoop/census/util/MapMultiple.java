@@ -20,6 +20,9 @@ public class MapMultiple implements Writable {
     private double femaleNeverMarried;
     private double marriageableFemales;
     private BigDecimal percentFemaleNeverMarried;
+    private double insideUrban;
+    private double outsideUrban;
+    private double rural;
 
     public MapMultiple() {
 
@@ -42,6 +45,9 @@ public class MapMultiple implements Writable {
         femaleNeverMarried = dataInput.readDouble();
         marriageableMales = dataInput.readDouble();
         marriageableFemales = dataInput.readDouble();
+        insideUrban = dataInput.readDouble();
+        outsideUrban = dataInput.readDouble();
+        rural = dataInput.readDouble();
     }
 
     @Override
@@ -52,9 +58,12 @@ public class MapMultiple implements Writable {
         dataOutput.writeDouble(femaleNeverMarried);
         dataOutput.writeDouble(marriageableMales);
         dataOutput.writeDouble(marriageableFemales);
+        dataOutput.writeDouble(insideUrban);
+        dataOutput.writeDouble(outsideUrban);
+        dataOutput.writeDouble(rural);
     }
 
-
+    //q1
     public double getOwn() {
         return own;
     }
@@ -70,15 +79,23 @@ public class MapMultiple implements Writable {
     public void setPercentRent(BigDecimal percentRent) {this.percentRent = percentRent;}
     public void setPercentOwn(BigDecimal percentOwn) {this.percentOwn = percentOwn;}
 
+    //q2
     public void setMaleNeverMarried(double maleNeverMarried) {this.maleNeverMarried = maleNeverMarried;}
     public void setFemaleNeverMarried(double femaleNeverMarried) {this.femaleNeverMarried = femaleNeverMarried;}
-
     public double getMaleNeverMarried() {return maleNeverMarried;}
     public double getFemaleNeverMarried() {return femaleNeverMarried;}
     public double getMarriageableMales() {return marriageableMales;}
     public void setMarriageableMales(double marriageableMales) {this.marriageableMales = marriageableMales;}
     public double getMarriageableFemales() {return marriageableFemales;}
     public void setMarriageableFemales(double marriageableFemales) {this.marriageableFemales = marriageableFemales;}
+
+    //q4
+    public double getInsideUrban() {return insideUrban;}
+    public void setInsideUrban(double insideUrban) {this.insideUrban = insideUrban;}
+    public double getOutsideUrban() {return outsideUrban;}
+    public void setOutsideUrban(double outsideUrban) {this.outsideUrban = outsideUrban;}
+    public double getRural() {return rural;}
+    public void setRural(double rural) {this.rural = rural;}
 
     @Override
     public String toString() {

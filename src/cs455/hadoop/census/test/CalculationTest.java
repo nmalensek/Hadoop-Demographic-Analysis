@@ -1,6 +1,7 @@
 package cs455.hadoop.census.test;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 public class CalculationTest {
 
@@ -23,6 +24,16 @@ public class CalculationTest {
                 + " Percentage residences owned: " + percentOwn + "%");
     }
 
+    private String calculatePercentage(double numerator, double denominator) {
+        DecimalFormat decimalFormat = new DecimalFormat("##.00");
+        double percentage = (numerator / denominator) * 100;
+        if (Double.isInfinite(percentage)) {
+            return "N/A";
+        } else {
+            return decimalFormat.format(percentage);
+        }
+    }
+
     private void calcAdd() {
         totalMales = males1 + males2;
         System.out.println(totalMales);
@@ -33,6 +44,9 @@ public class CalculationTest {
         CalculationTest calculationTest = new CalculationTest();
         calculationTest.calcPercent();
         calculationTest.calcAdd();
+        System.out.println(calculationTest.calculatePercentage(1, 3));
+        System.out.println(calculationTest.calculatePercentage(5, 10));
+        System.out.println(calculationTest.calculatePercentage(10, 0));
     }
 
 
