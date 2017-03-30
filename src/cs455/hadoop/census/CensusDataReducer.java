@@ -6,7 +6,6 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 /**
@@ -21,6 +20,9 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         multipleOutputs = new MultipleOutputs(context);
         multipleOutputs.write("question1", new Text("\nQuestion 1"), new Text(" "));
         multipleOutputs.write("question2", new Text("\nQuestion 2"), new Text(" "));
+        multipleOutputs.write("question3a", new Text("\nQuestion 3a"), new Text(" "));
+        multipleOutputs.write("question3b", new Text("\nQuestion 3b"), new Text(" "));
+        multipleOutputs.write("question3c", new Text("\nQuestion 3c"), new Text(" "));
         multipleOutputs.write("question4", new Text("\nQuestion 4"), new Text(" "));
     }
 
@@ -37,7 +39,13 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         double insideUrban = 0;
         double outsideUrban = 0;
         double rural = 0;
-
+        double hispanicMalesUnder18 = 0;
+        double hispanicFemalesUnder18 = 0;
+        double hispanicMales19to29 = 0;
+        double hispanicFemales19to29 = 0;
+        double hispanicMales30to39 = 0;
+        double hispanicFemales30to39 = 0;
+        double totalHispanicPopulation = 0;
 
         for (MapMultiple val : values) {
             totalRent += val.getRent();
@@ -49,34 +57,46 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             insideUrban += val.getInsideUrban();
             outsideUrban += val.getOutsideUrban();
             rural += val.getRural();
+            hispanicMalesUnder18 += val.getHispanicMalesUnder18();
+            hispanicFemalesUnder18 += val.getHispanicFemalesUnder18();
+            hispanicMales19to29 += val.getHispanicMales19to29();
+            hispanicFemales19to29 += val.getHispanicFemales19to29();
+            hispanicMales30to39 += val.getHispanicMales30to39();
+            hispanicFemales30to39 += val.getHispanicFemales30to39();
+            totalHispanicPopulation += val.getTotalHispanicPopulation();
         }
 
         multipleOutputs.write("question1", key, new Text(
                 " rent: " + calculatePercentage(totalRent, (totalRent + totalOwn)) + "% own: "
                         + calculatePercentage(totalOwn, (totalRent + totalOwn)) + "%"));
+
         multipleOutputs.write("question2", key, new Text(
                 " Males never married: " +
                        calculatePercentage(totalMalesNeverMarried, (totalMarriageableMales))
                         + "% Females never married: " +
                         calculatePercentage(totalFemalesNeverMarried, (totalMarriageableFemales)) + "%"));
+
+        multipleOutputs.write("question3a", key, new Text(
+                " Percent males <= 18: " + calculatePercentage(hispanicMalesUnder18, totalHispanicPopulation) +
+                        "% Percent females <= 18: " + calculatePercentage(hispanicFemalesUnder18, totalHispanicPopulation) +
+                        "%"));
+
+        multipleOutputs.write("question3b", key, new Text(
+                " Percent males 19 to 29: " + calculatePercentage(hispanicMales19to29, totalHispanicPopulation) +
+                        "% Percent females 19 to 29: " + calculatePercentage(hispanicFemales19to29, totalHispanicPopulation) +
+                        "%"));
+
+        multipleOutputs.write("question3c", key, new Text(
+                "Percent males 30 to 39: " + calculatePercentage(hispanicMales30to39, totalHispanicPopulation) +
+                        "% Percent females 30 to 39: " + calculatePercentage(hispanicFemales30to39, totalHispanicPopulation) +
+                        "%"));
+
         multipleOutputs.write("question4", key, new Text(
                 " Percent rural: "
                         + calculatePercentage(rural, (rural + insideUrban + outsideUrban)) +
                         "% Percent urban: " +
                         calculatePercentage((insideUrban + outsideUrban), (rural + insideUrban + outsideUrban))+ "%"));
-//        multipleOutputs.write("question1", key, new Text(
-//                " rent: " + calculatePercentage(totalRent, (totalRent + totalOwn)) + "% own: "
-//                        + calculatePercentage(totalOwn, (totalRent + totalOwn)) + "%"));
-//        multipleOutputs.write("question2", key, new Text(
-//                " Males never married: " +
-//                        calculatePercentage(totalMalesNeverMarried, (totalMarriageableMales))
-//                        + "% Females never married: " +
-//                        calculatePercentage(totalFemalesNeverMarried, (totalMarriageableFemales)) + "%"));
-//        multipleOutputs.write("question4", key, new Text(
-//                " Percent rural: "
-//                        + calculatePercentage(rural, (rural + insideUrban + outsideUrban)) +
-//                        "% Percent urban: " +
-//                        calculatePercentage((insideUrban + outsideUrban), (rural + insideUrban + outsideUrban)) + "%"));
+
     }
 
     private String calculatePercentage(double numerator, double denominator) {
@@ -89,12 +109,3 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         }
     }
 }
-
-
-//        mapMultiple.setPopulation(totalPopulation);
-//        mapMultiple.setOwn(totalOwn);
-//        mapMultiple.setRent(totalRent);
-//        mapMultiple.setPercentRent(percentRent);
-//        mapMultiple.setPercentOwn(percentOwn);
-
-//        context.write(key, new Text(mapMultiple.toString()));

@@ -39,14 +39,26 @@ public class CalculationTest {
         System.out.println(totalMales);
     }
 
+    private void femaleHispanicIterator() {
+        int hispanicFemalesUnder18 = 0;
+        int hispanicFemaleStartPosition = 4143;
+        int positionPlusNine = 4152;
+        for (int i = 0; i < 20; i++) {
+            System.out.println(hispanicFemaleStartPosition + " - " + positionPlusNine);
+            hispanicFemaleStartPosition = hispanicFemaleStartPosition + 9;
+            positionPlusNine = positionPlusNine + 9;
+        }
+    }
+
 
     public static void main(String[] args) {
         CalculationTest calculationTest = new CalculationTest();
-        calculationTest.calcPercent();
-        calculationTest.calcAdd();
-        System.out.println(calculationTest.calculatePercentage(1, 3));
-        System.out.println(calculationTest.calculatePercentage(5, 10));
-        System.out.println(calculationTest.calculatePercentage(10, 0));
+//        calculationTest.calcPercent();
+//        calculationTest.calcAdd();
+//        System.out.println(calculationTest.calculatePercentage(1, 3));
+//        System.out.println(calculationTest.calculatePercentage(5, 10));
+//        System.out.println(calculationTest.calculatePercentage(10, 0));
+        calculationTest.femaleHispanicIterator();
     }
 
 

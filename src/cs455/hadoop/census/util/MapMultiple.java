@@ -23,6 +23,13 @@ public class MapMultiple implements Writable {
     private double insideUrban;
     private double outsideUrban;
     private double rural;
+    private double hispanicMalesUnder18;
+    private double hispanicFemalesUnder18;
+    private double hispanicMales19to29;
+    private double hispanicFemales19to29;
+    private double hispanicMales30to39;
+    private double hispanicFemales30to39;
+    private double totalHispanicPopulation;
 
     public MapMultiple() {
 
@@ -48,6 +55,14 @@ public class MapMultiple implements Writable {
         insideUrban = dataInput.readDouble();
         outsideUrban = dataInput.readDouble();
         rural = dataInput.readDouble();
+        hispanicMalesUnder18 = dataInput.readDouble();
+        hispanicFemalesUnder18 = dataInput.readDouble();
+        hispanicMales19to29 = dataInput.readDouble();
+        hispanicFemales19to29 = dataInput.readDouble();
+        hispanicMales30to39 = dataInput.readDouble();
+        hispanicFemales30to39 = dataInput.readDouble();
+        totalHispanicPopulation = dataInput.readDouble();
+
     }
 
     @Override
@@ -61,6 +76,13 @@ public class MapMultiple implements Writable {
         dataOutput.writeDouble(insideUrban);
         dataOutput.writeDouble(outsideUrban);
         dataOutput.writeDouble(rural);
+        dataOutput.writeDouble(hispanicMalesUnder18);
+        dataOutput.writeDouble(hispanicFemalesUnder18);
+        dataOutput.writeDouble(hispanicMales19to29);
+        dataOutput.writeDouble(hispanicFemales19to29);
+        dataOutput.writeDouble(hispanicMales30to39);
+        dataOutput.writeDouble(hispanicFemales30to39);
+        dataOutput.writeDouble(totalHispanicPopulation);
     }
 
     //q1
@@ -88,6 +110,22 @@ public class MapMultiple implements Writable {
     public void setMarriageableMales(double marriageableMales) {this.marriageableMales = marriageableMales;}
     public double getMarriageableFemales() {return marriageableFemales;}
     public void setMarriageableFemales(double marriageableFemales) {this.marriageableFemales = marriageableFemales;}
+
+    //q3
+    public double getHispanicMalesUnder18() {return hispanicMalesUnder18;}
+    public void setHispanicMalesUnder18(double hispanicMalesUnder18) {this.hispanicMalesUnder18 = hispanicMalesUnder18;}
+    public double getHispanicFemalesUnder18() {return hispanicFemalesUnder18;}
+    public void setHispanicFemalesUnder18(double hispanicFemalesUnder18) {this.hispanicFemalesUnder18 = hispanicFemalesUnder18;}
+    public double getHispanicMales19to29() {return hispanicMales19to29;}
+    public void setHispanicMales19to29(double hispanicMales19to29) {this.hispanicMales19to29 = hispanicMales19to29;}
+    public double getHispanicFemales19to29() {return hispanicFemales19to29;}
+    public void setHispanicFemales19to29(double hispanicFemales19to29) {this.hispanicFemales19to29 = hispanicFemales19to29;}
+    public double getHispanicMales30to39() {return hispanicMales30to39;}
+    public void setHispanicMales30to39(double hispanicMales30to39) {this.hispanicMales30to39 = hispanicMales30to39;}
+    public double getHispanicFemales30to39() {return hispanicFemales30to39;}
+    public void setHispanicFemales30to39(double hispanicFemales30to39) {this.hispanicFemales30to39 = hispanicFemales30to39;}
+    public double getTotalHispanicPopulation() {return totalHispanicPopulation;}
+    public void setTotalHispanicPopulation(double totalHispanicPopulation) {this.totalHispanicPopulation = totalHispanicPopulation;}
 
     //q4
     public double getInsideUrban() {return insideUrban;}

@@ -62,6 +62,7 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                             line.substring(hispanicMaleStartPosition, hispanicMaleStartPosition + 9));
                     hispanicMaleStartPosition += 9;
                 }
+                mapMultiple.setHispanicMalesUnder18(hispanicMalesUnder18);
 
                 //question 3a females
                 int hispanicFemalesUnder18 = 0;
@@ -71,6 +72,7 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                             line.substring(hispanicFemaleStartPosition, hispanicFemaleStartPosition + 9));
                     hispanicFemaleStartPosition += 9;
                 }
+                mapMultiple.setHispanicFemalesUnder18(hispanicFemalesUnder18);
                 
 
                 //question 3b males
@@ -81,24 +83,43 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                             line.substring(hispanicMale19to29StartPosition, hispanicMale19to29StartPosition + 9));
                     hispanicMaleStartPosition += 9;
                 }
-                //TODO change start position!
+                mapMultiple.setHispanicMales19to29(hispanicMales19to29);
+
                 //question 3b females
                 int hispanicFemales19to29 = 0;
-                int hispanicFemale19to29StartPosition = 3981;
+                int hispanicFemale19to29StartPosition = 4260;
                 for (int i = 0; i < 5; i++) {
                     hispanicFemales19to29 += Integer.parseInt(
                             line.substring(hispanicFemale19to29StartPosition, hispanicFemale19to29StartPosition + 9));
                     hispanicFemale19to29StartPosition += 9;
                 }
+                mapMultiple.setHispanicFemales19to29(hispanicFemales19to29);
 
                 //question 3c males
                 int hispanicMales30to34 = Integer.parseInt(line.substring(4026, 4035));
                 int hispanicMales35to39 = Integer.parseInt(line.substring(4035, 4044));
                 int hispanicMales30to39 = hispanicMales30to34 + hispanicMales35to39;
+                mapMultiple.setHispanicMales30to39(hispanicMales30to39);
+
+                //question 3c females
+                int hispanicFemales30to34 = Integer.parseInt(line.substring(4305, 4314));
+                int hispanicFemales35to39 = Integer.parseInt(line.substring(4314, 4323));
+                int hispanicFemales30to39 = hispanicFemales30to34 + hispanicFemales35to39;
+                mapMultiple.setHispanicFemales30to39(hispanicFemales30to39);
+
+                //question 3 total hispanic population
+                //62 is number of sections dedicated to hispanic population (31 each gender)
+                int totalHispanicPopulation = 0;
+                int hispanicPopulationStartPosition = 3864;
+                for (int i = 0; i < 62; i++) {
+                    totalHispanicPopulation += Integer.parseInt(
+                            line.substring(hispanicPopulationStartPosition, hispanicPopulationStartPosition + 9));
+                    hispanicPopulationStartPosition += 9;
+                }
+                mapMultiple.setTotalHispanicPopulation(totalHispanicPopulation);
             }
 
             if(logicalPartNumber == 2) {
-
                 //question 1: rent vs. own
                 int own = Integer.parseInt(line.substring(1803, 1812));
                 int rent = Integer.parseInt(line.substring(1812, 1821));
