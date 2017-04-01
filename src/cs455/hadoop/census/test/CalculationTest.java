@@ -1,7 +1,11 @@
 package cs455.hadoop.census.test;
 
+import cs455.hadoop.census.ranges.HouseRanges;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CalculationTest {
 
@@ -50,6 +54,31 @@ public class CalculationTest {
         }
     }
 
+    private void medianTest() {
+        Map<String, Integer> testMap = new HashMap<>();
+        HouseRanges houseRanges = HouseRanges.getInstance();
+        testMap.put(houseRanges.getRanges()[0], 1000);
+        testMap.put(houseRanges.getRanges()[1], 750);
+        testMap.put(houseRanges.getRanges()[2], 2750);
+        testMap.put(houseRanges.getRanges()[3], 2001);
+        testMap.put(houseRanges.getRanges()[4], 4000);
+        int total = 0;
+        for (String key : testMap.keySet()) {
+            total += testMap.get(key);
+        }
+        int half = total/2;
+        int currentCount = 0;
+        int iterations = 0;
+        while (currentCount < half) {
+                currentCount += testMap.get(houseRanges.getRanges()[iterations]);
+                iterations++;
+        }
+
+        System.out.println(currentCount);
+        System.out.println(houseRanges.getRanges()[iterations-1]);
+
+    }
+
 
     public static void main(String[] args) {
         CalculationTest calculationTest = new CalculationTest();
@@ -58,7 +87,8 @@ public class CalculationTest {
 //        System.out.println(calculationTest.calculatePercentage(1, 3));
 //        System.out.println(calculationTest.calculatePercentage(5, 10));
 //        System.out.println(calculationTest.calculatePercentage(10, 0));
-        calculationTest.femaleHispanicIterator();
+//        calculationTest.femaleHispanicIterator();
+        calculationTest.medianTest();
     }
 
 
