@@ -186,7 +186,7 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                 mapMultiple.setRentValue12(Integer.parseInt(line.substring(3558, 3567)));
                 mapMultiple.setRentValue13(Integer.parseInt(line.substring(3567, 3576)));
                 mapMultiple.setRentValue14(Integer.parseInt(line.substring(3576, 3585)));
-                mapMultiple.setRentValue15(Integer.parseInt(line.substring(3585, 3596)));
+                mapMultiple.setRentValue15(Integer.parseInt(line.substring(3585, 3594)));
                 mapMultiple.setRentValue16(Integer.parseInt(line.substring(3594, 3603)));
             }
 

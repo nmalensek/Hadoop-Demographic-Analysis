@@ -234,14 +234,16 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
     private String calculatePercentile(Map<String, Double> map, double totalNumber, double percentile) {
         List<Double> sortedList = new ArrayList<>();
-        double dividingPoint = totalNumber * percentile;
+        double TOTAL = 0;
         int currentCount = 0;
         int iterations = 0;
 
         for (String key : map.keySet()) {
             sortedList.add(map.get(key));
+            TOTAL += map.get(key);
         }
         Collections.sort(sortedList);
+        double dividingPoint = TOTAL * percentile;
 
         while (currentCount < dividingPoint) {
             currentCount += sortedList.get(iterations);
@@ -254,9 +256,22 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             for (String key : map.keySet()) {
                 if (sortedList.get(iterations - 1) == map.get(key)) {
                     relevantRange = key;
+                    break;
                 }
             }
         }
-        return relevantRange;
+
+        //debug
+        String test = "";
+        test += iterations + ":" + dividingPoint + ":" + totalNumber + ":" + TOTAL + "\n" + sortedList.toString() + "\n";
+        for (String key : map.keySet()) {
+            test += "[";
+            test += key.toString() + ", ";
+            test += map.get(key) + "]\n";
+        }
+        test += "***" + relevantRange + "***";
+        return test;
+
+
     }
 }

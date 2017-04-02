@@ -78,7 +78,7 @@ public class CalculationTest {
         double half = total * .50;
         int currentCount = 0;
         int iterations = 0;
-        while (currentCount < half) {
+        while (currentCount <= half) {
                 currentCount += sortedList.get(iterations);
                 iterations++;
         }
@@ -90,6 +90,7 @@ public class CalculationTest {
             }
         }
 
+        System.out.println(iterations);
         System.out.println(currentCount);
         System.out.println(median);
 
