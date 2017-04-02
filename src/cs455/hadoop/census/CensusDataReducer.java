@@ -10,8 +10,7 @@ import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Reducer: Input to the reducer is the output from the mapper. It receives word, list<count> pairs.
@@ -183,7 +182,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
         multipleOutputs.write("question2", key, new Text(
                 " Males never married: " +
-                       calculatePercentage(totalMalesNeverMarried, (totalMarriageableMales))
+                        calculatePercentage(totalMalesNeverMarried, (totalMarriageableMales))
                         + "% Females never married: " +
                         calculatePercentage(totalFemalesNeverMarried, (totalMarriageableFemales)) + "%"));
 
@@ -206,13 +205,13 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
                 " Percent rural: "
                         + calculatePercentage(rural, (rural + insideUrban + outsideUrban)) +
                         "% Percent urban: " +
-                        calculatePercentage((insideUrban + outsideUrban), (rural + insideUrban + outsideUrban))+ "%"));
+                        calculatePercentage((insideUrban + outsideUrban), (rural + insideUrban + outsideUrban)) + "%"));
 
         multipleOutputs.write("question5", key, new Text(
-                calculateMedian(houseRangeMap, totalOwnedHomes, houseRanges)));
+                calculatePercentile(houseRangeMap, totalOwnedHomes, .50)));
 
         multipleOutputs.write("question6", key, new Text(
-                calculateMedian(rentRangeMap, totalRenters, rentRanges)));
+                calculatePercentile(rentRangeMap, totalRenters, .50)));
 
     }
 
@@ -233,18 +232,31 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         }
     }
 
-    private String calculateMedian(Map<String, Double> map, double totalNumber, Ranges range) {
-        double halfway = totalNumber / 2;
+    private String calculatePercentile(Map<String, Double> map, double totalNumber, double percentile) {
+        List<Double> sortedList = new ArrayList<>();
+        double dividingPoint = totalNumber * percentile;
         int currentCount = 0;
         int iterations = 0;
-        while (currentCount < halfway) {
-            currentCount += map.get(range.getRanges()[iterations]);
+
+        for (String key : map.keySet()) {
+            sortedList.add(map.get(key));
+        }
+        Collections.sort(sortedList);
+
+        while (currentCount < dividingPoint) {
+            currentCount += sortedList.get(iterations);
             iterations++;
         }
-        if (iterations == 0) {
-            return "N/A";
-        } else {
-            return range.getRanges()[iterations-1];
+
+        String relevantRange = "N/A";
+
+        if (iterations != 0) {
+            for (String key : map.keySet()) {
+                if (sortedList.get(iterations - 1) == map.get(key)) {
+                    relevantRange = key;
+                }
+            }
         }
+        return relevantRange;
     }
 }

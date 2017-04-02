@@ -60,11 +60,11 @@ public class CalculationTest {
         Map<String, Integer> testMap = new HashMap<>();
         HouseRanges houseRanges = HouseRanges.getInstance();
         ArrayList<Integer> sortedList = new ArrayList<>();
-        testMap.put(houseRanges.getRanges()[0], 1000);
+        testMap.put(houseRanges.getRanges()[0], 2001);
         testMap.put(houseRanges.getRanges()[1], 750);
-        testMap.put(houseRanges.getRanges()[2], 2750);
-        testMap.put(houseRanges.getRanges()[3], 2001);
-        testMap.put(houseRanges.getRanges()[4], 4000);
+        testMap.put(houseRanges.getRanges()[2], 4750);
+        testMap.put(houseRanges.getRanges()[3], 1000);
+        testMap.put(houseRanges.getRanges()[4], 2000);
 
         for (String key : testMap.keySet()) {
             sortedList.add(testMap.get(key));
@@ -75,7 +75,7 @@ public class CalculationTest {
         for (int i = 0; i < sortedList.size(); i++) {
             total += sortedList.get(i);
         }
-        int half = total/2;
+        double half = total * .50;
         int currentCount = 0;
         int iterations = 0;
         while (currentCount < half) {
