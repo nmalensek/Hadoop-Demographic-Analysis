@@ -128,7 +128,7 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
             rentValue13 += val.getRentValue13();
             rentValue14 += val.getRentValue14();
             rentValue15 += val.getRentValue15();
-//            rentValue16 += val.getRentValue16();
+            rentValue16 += val.getRentValue16();
 
         }
 

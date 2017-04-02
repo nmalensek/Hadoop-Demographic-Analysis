@@ -4,6 +4,8 @@ import cs455.hadoop.census.ranges.HouseRanges;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,25 +59,39 @@ public class CalculationTest {
     private void medianTest() {
         Map<String, Integer> testMap = new HashMap<>();
         HouseRanges houseRanges = HouseRanges.getInstance();
+        ArrayList<Integer> sortedList = new ArrayList<>();
         testMap.put(houseRanges.getRanges()[0], 1000);
         testMap.put(houseRanges.getRanges()[1], 750);
         testMap.put(houseRanges.getRanges()[2], 2750);
         testMap.put(houseRanges.getRanges()[3], 2001);
         testMap.put(houseRanges.getRanges()[4], 4000);
-        int total = 0;
+
         for (String key : testMap.keySet()) {
-            total += testMap.get(key);
+            sortedList.add(testMap.get(key));
+        }
+        Collections.sort(sortedList);
+        System.out.println(sortedList);
+        int total = 0;
+        for (int i = 0; i < sortedList.size(); i++) {
+            total += sortedList.get(i);
         }
         int half = total/2;
         int currentCount = 0;
         int iterations = 0;
         while (currentCount < half) {
-                currentCount += testMap.get(houseRanges.getRanges()[iterations]);
+                currentCount += sortedList.get(iterations);
                 iterations++;
         }
 
+        String median = "";
+        for (String key : testMap.keySet()) {
+            if (sortedList.get(iterations-1) == testMap.get(key)) {
+                median = key;
+            }
+        }
+
         System.out.println(currentCount);
-        System.out.println(houseRanges.getRanges()[iterations-1]);
+        System.out.println(median);
 
     }
 
