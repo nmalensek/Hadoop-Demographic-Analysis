@@ -11,7 +11,7 @@ public class MapMultiple implements Writable {
 
     private double own;
     private double rent;
-    private int population;
+    private double population;
     private BigDecimal percentRent;
     private BigDecimal percentOwn;
     private double maleNeverMarried;
@@ -70,7 +70,7 @@ public class MapMultiple implements Writable {
 
     public MapMultiple() {}
 
-    public MapMultiple(double own, double rent, int population, double maleNeverMarried, double femaleNeverMarried) {
+    public MapMultiple(double own, double rent, double population, double maleNeverMarried, double femaleNeverMarried) {
         this.own = own;
         this.rent = rent;
         this.population = population;
@@ -85,10 +85,9 @@ public class MapMultiple implements Writable {
         own = dataInput.readDouble();
         rent = dataInput.readDouble();
         //q2
+        population = dataInput.readDouble();
         maleNeverMarried = dataInput.readDouble();
         femaleNeverMarried = dataInput.readDouble();
-        marriageableMales = dataInput.readDouble();
-        marriageableFemales = dataInput.readDouble();
         //q3
         hispanicMalesUnder18 = dataInput.readDouble();
         hispanicFemalesUnder18 = dataInput.readDouble();
@@ -150,10 +149,9 @@ public class MapMultiple implements Writable {
         dataOutput.writeDouble(own);
         dataOutput.writeDouble(rent);
         //q2
+        dataOutput.writeDouble(population);
         dataOutput.writeDouble(maleNeverMarried);
         dataOutput.writeDouble(femaleNeverMarried);
-        dataOutput.writeDouble(marriageableMales);
-        dataOutput.writeDouble(marriageableFemales);
         //q3
         dataOutput.writeDouble(hispanicMalesUnder18);
         dataOutput.writeDouble(hispanicFemalesUnder18);
@@ -230,10 +228,8 @@ public class MapMultiple implements Writable {
     public void setFemaleNeverMarried(double femaleNeverMarried) {this.femaleNeverMarried = femaleNeverMarried;}
     public double getMaleNeverMarried() {return maleNeverMarried;}
     public double getFemaleNeverMarried() {return femaleNeverMarried;}
-    public double getMarriageableMales() {return marriageableMales;}
-    public void setMarriageableMales(double marriageableMales) {this.marriageableMales = marriageableMales;}
-    public double getMarriageableFemales() {return marriageableFemales;}
-    public void setMarriageableFemales(double marriageableFemales) {this.marriageableFemales = marriageableFemales;}
+    public double getPopulation() {return population;}
+    public void setPopulation(double population) {this.population = population;}
 
     //q3
     public double getHispanicMalesUnder18() {return hispanicMalesUnder18;}
@@ -371,7 +367,7 @@ public class MapMultiple implements Writable {
         result = (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(rent);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + population;
+        result = (int) (31 * result + population);
         result = 31 * result + (percentRent != null ? percentRent.hashCode() : 0);
         result = 31 * result + (percentOwn != null ? percentOwn.hashCode() : 0);
         return result;

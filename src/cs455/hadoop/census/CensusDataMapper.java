@@ -34,25 +34,15 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
             }
 
             if(logicalPartNumber == 1) {
-                //question 2: never married m, f
-                int totalMarriageableMales = 0;
+                //question 2: never married m, f. comparing to total state population acc. to instructor direction.
+                int population = Integer.parseInt(line.substring(300, 309));
+
                 int maleNeverMarried = Integer.parseInt(line.substring(4422, 4431));
-                int maleMarried = Integer.parseInt(line.substring(4431, 4440));
-                int maleSeparated = Integer.parseInt(line.substring(4440, 4449));
-                int maleWidowed = Integer.parseInt(line.substring(4449, 4458));
-                totalMarriageableMales += maleNeverMarried + maleMarried + maleSeparated + maleWidowed;
-
-                int totalMarriageableFemales = 0;
                 int femaleNeverMarried = Integer.parseInt(line.substring(4467, 4476));
-                int femaleMarried = Integer.parseInt(line.substring(4476, 4485));
-                int femaleSeparated = Integer.parseInt(line.substring(4485, 4494));
-                int femaleWidowed = Integer.parseInt(line.substring(4494, 4503));
-                totalMarriageableFemales += femaleNeverMarried + femaleMarried + femaleSeparated + femaleWidowed;
 
+                mapMultiple.setPopulation(population);
                 mapMultiple.setMaleNeverMarried(maleNeverMarried);
-                mapMultiple.setMarriageableMales(totalMarriageableMales);
                 mapMultiple.setFemaleNeverMarried(femaleNeverMarried);
-                mapMultiple.setMarriageableFemales(totalMarriageableFemales);
 
                 //question 3a males
                 int hispanicMalesUnder18 = 0;

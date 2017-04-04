@@ -14,10 +14,9 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
 
         double totalRent = 0;
         double totalOwn = 0;
+        double population = 0;
         double totalMalesNeverMarried = 0;
         double totalFemalesNeverMarried = 0;
-        double totalMarriageableMales = 0;
-        double totalMarriageableFemales = 0;
         double insideUrban = 0;
         double outsideUrban = 0;
         double rural = 0;
@@ -72,10 +71,9 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
             totalRent += val.getRent();
             totalOwn += val.getOwn();
 
+            population += val.getPopulation();
             totalMalesNeverMarried += val.getMaleNeverMarried();
             totalFemalesNeverMarried += val.getFemaleNeverMarried();
-            totalMarriageableMales += val.getMarriageableMales();
-            totalMarriageableFemales += val.getMarriageableFemales();
 
             hispanicMalesUnder18 += val.getHispanicMalesUnder18();
             hispanicFemalesUnder18 += val.getHispanicFemalesUnder18();
@@ -136,10 +134,9 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         mapMultiple.setRent(totalRent);
         mapMultiple.setOwn(totalOwn);
         //q2
+        mapMultiple.setPopulation(population);
         mapMultiple.setMaleNeverMarried(totalMalesNeverMarried);
         mapMultiple.setFemaleNeverMarried(totalFemalesNeverMarried);
-        mapMultiple.setMarriageableMales(totalMarriageableMales);
-        mapMultiple.setMarriageableFemales(totalMarriageableFemales);
         //q3
         mapMultiple.setHispanicMalesUnder18(hispanicMalesUnder18);
         mapMultiple.setHispanicFemalesUnder18(hispanicFemalesUnder18);

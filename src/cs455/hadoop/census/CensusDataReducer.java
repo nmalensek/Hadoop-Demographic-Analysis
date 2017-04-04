@@ -42,10 +42,9 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
         double totalRent = 0;
         double totalOwn = 0;
+        double population = 0;
         double totalMalesNeverMarried = 0;
         double totalFemalesNeverMarried = 0;
-        double totalMarriageableMales = 0;
-        double totalMarriageableFemales = 0;
         double insideUrban = 0;
         double outsideUrban = 0;
         double rural = 0;
@@ -100,10 +99,9 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             totalRent += val.getRent();
             totalOwn += val.getOwn();
 
+            population += val.getPopulation();
             totalMalesNeverMarried += val.getMaleNeverMarried();
             totalFemalesNeverMarried += val.getFemaleNeverMarried();
-            totalMarriageableMales += val.getMarriageableMales();
-            totalMarriageableFemales += val.getMarriageableFemales();
 
             hispanicMalesUnder18 += val.getHispanicMalesUnder18();
             hispanicFemalesUnder18 += val.getHispanicFemalesUnder18();
@@ -182,9 +180,9 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
         multipleOutputs.write("question2", key, new Text(
                 " Males never married: " +
-                        calculatePercentage(totalMalesNeverMarried, (totalMarriageableMales))
+                        calculatePercentage(totalMalesNeverMarried, (population))
                         + "% Females never married: " +
-                        calculatePercentage(totalFemalesNeverMarried, (totalMarriageableFemales)) + "%"));
+                        calculatePercentage(totalFemalesNeverMarried, (population)) + "%"));
 
         multipleOutputs.write("question3a", key, new Text(
                 " Percent males <= 18: " + calculatePercentage(hispanicMalesUnder18, totalHispanicPopulation) +
@@ -225,7 +223,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
     private String calculatePercentage(double numerator, double denominator) {
         DecimalFormat decimalFormat = new DecimalFormat("##.00");
         double percentage = (numerator / denominator) * 100;
-        if (Double.isInfinite(percentage)) {
+        if (Double.isInfinite(percentage) || percentage > 100 || percentage < 100) {
             return "N/A";
         } else {
             return decimalFormat.format(percentage);
