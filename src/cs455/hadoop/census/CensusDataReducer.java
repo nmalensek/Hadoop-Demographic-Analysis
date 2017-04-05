@@ -52,6 +52,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         double insideUrban = 0;
         double outsideUrban = 0;
         double rural = 0;
+        double notDefined = 0;
         double hispanicMalesUnder18 = 0;
         double hispanicFemalesUnder18 = 0;
         double hispanicMales19to29 = 0;
@@ -119,6 +120,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             insideUrban += val.getInsideUrban();
             outsideUrban += val.getOutsideUrban();
             rural += val.getRural();
+            notDefined += val.getNotDefined();
 
             totalOwnedHomes += val.getTotalOwnedHomes();
             ownedHomeValue0 += val.getOwnedHomeValue0();
@@ -209,9 +211,9 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
         multipleOutputs.write("question4", key, new Text(
                 " Percent rural: "
-                        + calculatePercentage(rural, (rural + insideUrban + outsideUrban)) +
+                        + calculatePercentage(rural, (rural + insideUrban + outsideUrban + notDefined)) +
                         "% Percent urban: " +
-                        calculatePercentage((insideUrban + outsideUrban), (rural + insideUrban + outsideUrban)) + "%"));
+                        calculatePercentage((insideUrban + outsideUrban), (rural + insideUrban + outsideUrban + notDefined)) + "%"));
 
         multipleOutputs.write("question5", key, new Text(
                 calculatePercentile(houseRangeMap, houseRanges.getRanges(), totalOwnedHomes, 0.50)));

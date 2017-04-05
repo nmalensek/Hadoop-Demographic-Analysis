@@ -19,6 +19,7 @@ public class MapMultiple implements Writable {
     private double insideUrban;
     private double outsideUrban;
     private double rural;
+    private double notDefined;
     private double hispanicMalesUnder18;
     private double hispanicFemalesUnder18;
     private double hispanicMales19to29;
@@ -101,6 +102,7 @@ public class MapMultiple implements Writable {
         insideUrban = dataInput.readDouble();
         outsideUrban = dataInput.readDouble();
         rural = dataInput.readDouble();
+        notDefined = dataInput.readDouble();
         //q5
         totalOwnedHomes = dataInput.readDouble();
         ownedHomeValue0 = dataInput.readDouble();
@@ -170,6 +172,7 @@ public class MapMultiple implements Writable {
         dataOutput.writeDouble(insideUrban);
         dataOutput.writeDouble(outsideUrban);
         dataOutput.writeDouble(rural);
+        dataOutput.writeDouble(notDefined);
         //q5
         dataOutput.writeDouble(totalOwnedHomes);
         dataOutput.writeDouble(ownedHomeValue0);
@@ -266,6 +269,8 @@ public class MapMultiple implements Writable {
     public void setOutsideUrban(double outsideUrban) {this.outsideUrban = outsideUrban;}
     public double getRural() {return rural;}
     public void setRural(double rural) {this.rural = rural;}
+    public double getNotDefined() {return notDefined;}
+    public void setNotDefined(double notDefined) {this.notDefined = notDefined;}
 
     //q5
     public double getTotalOwnedHomes() {return totalOwnedHomes;}

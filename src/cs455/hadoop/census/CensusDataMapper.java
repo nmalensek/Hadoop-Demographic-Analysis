@@ -124,9 +124,11 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                 int inUrban = Integer.parseInt(line.substring(1821, 1830));
                 int outUrban = Integer.parseInt(line.substring(1830, 1839));
                 int rural = Integer.parseInt(line.substring(1839, 1848));
+                int notDefined = Integer.parseInt(line.substring(1848, 1857));
                 mapMultiple.setInsideUrban(inUrban);
                 mapMultiple.setOutsideUrban(outUrban);
                 mapMultiple.setRural(rural);
+                mapMultiple.setNotDefined(notDefined);
 
                 //question 5: median owner-occupied home value
                 int houseValueStartPosition = 2928;

@@ -20,6 +20,7 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         double insideUrban = 0;
         double outsideUrban = 0;
         double rural = 0;
+        double notDefined = 0;
         double hispanicMalesUnder18 = 0;
         double hispanicFemalesUnder18 = 0;
         double hispanicMales19to29 = 0;
@@ -87,6 +88,7 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
             insideUrban += val.getInsideUrban();
             outsideUrban += val.getOutsideUrban();
             rural += val.getRural();
+            notDefined += val.getNotDefined();
 
             totalOwnedHomes += val.getTotalOwnedHomes();
             ownedHomeValue0 += val.getOwnedHomeValue0();
@@ -153,6 +155,7 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         mapMultiple.setInsideUrban(insideUrban);
         mapMultiple.setOutsideUrban(outsideUrban);
         mapMultiple.setRural(rural);
+        mapMultiple.setNotDefined(notDefined);
         //q5
         mapMultiple.setTotalOwnedHomes(totalOwnedHomes);
         mapMultiple.setOwnedHomeValue0(ownedHomeValue0);
