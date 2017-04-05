@@ -40,6 +40,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         Map<Integer, Double> rentRangeMap = new TreeMap<>();
         HouseRanges houseRanges = HouseRanges.getInstance();
         RentRanges rentRanges = RentRanges.getInstance();
+        Map<Text, Double> elderlyMap = new HashMap<>();
 
         double totalRent = 0;
         double totalOwn = 0;
@@ -96,6 +97,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         double rentValue15 = 0;
         double rentValue16 = 0;
         double elderlyPopulation = 0;
+        String mostElderlyState = "";
 
         for (MapMultiple val : values) {
             totalRent += val.getRent();
@@ -178,6 +180,8 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             rentRangeMap.put(rentRanges.getIntegerRents()[i], rentPaidArray[i]);
         }
 
+        elderlyMap.put(key, Double.parseDouble(calculatePercentage(elderlyPopulation, population)));
+
         multipleOutputs.write("question1", key, new Text(
                 " rent: " + calculatePercentage(totalRent, (totalRent + totalOwn)) + "% own: "
                         + calculatePercentage(totalOwn, (totalRent + totalOwn)) + "%"));
@@ -199,7 +203,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
                         "%"));
 
         multipleOutputs.write("question3c", key, new Text(
-                "Percent males 30 to 39: " + calculatePercentage(hispanicMales30to39, totalHispanicPopulation) +
+                " Percent males 30 to 39: " + calculatePercentage(hispanicMales30to39, totalHispanicPopulation) +
                         "% Percent females 30 to 39: " + calculatePercentage(hispanicFemales30to39, totalHispanicPopulation) +
                         "%"));
 
@@ -218,7 +222,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         //q7
 
         multipleOutputs.write("question8", key, new Text(
-                " Population aged >=85: " + calculatePercentage(elderlyPopulation, population) + "%"));
+                " " + stateWithMostElderlyPeople(elderlyMap)));
 
     }
 
@@ -261,16 +265,26 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         }
 
         //debug
-        String test = "";
-        test += iterations + ":" + dividingPoint + ":" + totalNumber + "\n" + map.values().toString() + "\n";
-        for (Integer key : map.keySet()) {
-            test += "[";
-            test += key.toString() + ", ";
-            test += map.get(key) + "]\n";
+//        String test = "";
+//        test += iterations + ":" + dividingPoint + ":" + totalNumber + "\n" + map.values().toString() + "\n";
+//        for (Integer key : map.keySet()) {
+//            test += "[";
+//            test += key.toString() + ", ";
+//            test += map.get(key) + "]\n";
+//        }
+//        test += "***" + relevantRange + "***";
+        return relevantRange;
+    }
+
+    private Text stateWithMostElderlyPeople(Map<Text, Double> stateElderlyMap) {
+        Text mostElderlyState = new Text();
+        Double currentMax = new Double(0);
+        for (Text state : stateElderlyMap.keySet()) {
+            if (stateElderlyMap.get(state) > currentMax) {
+                currentMax = stateElderlyMap.get(state);
+                mostElderlyState.set(state + ": " + currentMax + "%");
+            }
         }
-        test += "***" + relevantRange + "***";
-        return test;
-
-
+        return mostElderlyState;
     }
 }

@@ -15,9 +15,7 @@ public class MapMultiple implements Writable {
     private BigDecimal percentRent;
     private BigDecimal percentOwn;
     private double maleNeverMarried;
-    private double marriageableMales;
     private double femaleNeverMarried;
-    private double marriageableFemales;
     private double insideUrban;
     private double outsideUrban;
     private double rural;
