@@ -67,6 +67,16 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         double rentValue14 = 0;
         double rentValue15 = 0;
         double rentValue16 = 0;
+        double totalRooms = 0;
+        double oneRoom = 0;
+        double twoRooms = 0;
+        double threeRooms = 0;
+        double fourRooms = 0;
+        double fiveRooms = 0;
+        double sixRooms = 0;
+        double sevenRooms = 0;
+        double eightRooms = 0;
+        double nineRooms = 0;
         double elderlyPopulation = 0;
 
         for (MapMultiple val : values) {
@@ -131,9 +141,18 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
             rentValue15 += val.getRentValue15();
             rentValue16 += val.getRentValue16();
 
+            totalRooms += val.getTotalRooms();
+            oneRoom += val.getOneRoom();
+            twoRooms += val.getTwoRooms();
+            threeRooms += val.getThreeRooms();
+            fourRooms += val.getFourRooms();
+            fiveRooms += val.getFiveRooms();
+            sixRooms += val.getSixRooms();
+            sevenRooms += val.getSevenRooms();
+            eightRooms += val.getEightRooms();
+            nineRooms += val.getNineRooms();
+
             elderlyPopulation += val.getElderlyPopulation();
-
-
         }
 
         //q1
@@ -198,6 +217,16 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         mapMultiple.setRentValue15(rentValue15);
         mapMultiple.setRentValue16(rentValue16);
         //q7
+        mapMultiple.setTotalRooms(totalRooms);
+        mapMultiple.setOneRoom(oneRoom);
+        mapMultiple.setTwoRooms(twoRooms);
+        mapMultiple.setThreeRooms(threeRooms);
+        mapMultiple.setFourRooms(fourRooms);
+        mapMultiple.setFiveRooms(fiveRooms);
+        mapMultiple.setSixRooms(sixRooms);
+        mapMultiple.setSevenRooms(sevenRooms);
+        mapMultiple.setEightRooms(eightRooms);
+        mapMultiple.setNineRooms(nineRooms);
 
         //q8
         mapMultiple.setElderlyPopulation(elderlyPopulation);

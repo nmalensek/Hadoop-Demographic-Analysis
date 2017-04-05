@@ -99,6 +99,16 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         double rentValue14 = 0;
         double rentValue15 = 0;
         double rentValue16 = 0;
+        double totalRooms = 0;
+        double oneRoom = 0;
+        double twoRooms = 0;
+        double threeRooms = 0;
+        double fourRooms = 0;
+        double fiveRooms = 0;
+        double sixRooms = 0;
+        double sevenRooms = 0;
+        double eightRooms = 0;
+        double nineRooms = 0;
         double elderlyPopulation = 0;
 
         for (MapMultiple val : values) {
@@ -162,6 +172,17 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             rentValue14 += val.getRentValue14();
             rentValue15 += val.getRentValue15();
             rentValue16 += val.getRentValue16();
+
+            totalRooms += val.getTotalRooms();
+            oneRoom += val.getOneRoom();
+            twoRooms += val.getTwoRooms();
+            threeRooms += val.getThreeRooms();
+            fourRooms += val.getFourRooms();
+            fiveRooms += val.getFiveRooms();
+            sixRooms += val.getSixRooms();
+            sevenRooms += val.getSevenRooms();
+            eightRooms += val.getEightRooms();
+            nineRooms += val.getNineRooms();
 
             elderlyPopulation += val.getElderlyPopulation();
             elderlyMap.put(key, Double.parseDouble(calculatePercentage(elderlyPopulation, population)));
@@ -230,6 +251,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
     //must close multiple outputs, otherwise the results might not be written to output files
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
+        //question 8 written here so only the max value's output
         multipleOutputs.write("question8", mostElderlyState, new Text(
                 " " + currentMax + "%"));
         super.cleanup(context);

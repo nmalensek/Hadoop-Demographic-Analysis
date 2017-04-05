@@ -67,6 +67,15 @@ public class MapMultiple implements Writable {
     private double rentValue15;
     private double rentValue16;
     private double totalRooms;
+    private double oneRoom;
+    private double twoRooms;
+    private double threeRooms;
+    private double fourRooms;
+    private double fiveRooms;
+    private double sixRooms;
+    private double sevenRooms;
+    private double eightRooms;
+    private double nineRooms;
     private double elderlyPopulation;
 
 
@@ -146,6 +155,15 @@ public class MapMultiple implements Writable {
         rentValue16 = dataInput.readDouble();
         //q7
         totalRooms = dataInput.readDouble();
+        oneRoom = dataInput.readDouble();
+        twoRooms = dataInput.readDouble();
+        threeRooms = dataInput.readDouble();
+        fourRooms = dataInput.readDouble();
+        fiveRooms = dataInput.readDouble();
+        sixRooms = dataInput.readDouble();
+        sevenRooms = dataInput.readDouble();
+        eightRooms = dataInput.readDouble();
+        nineRooms = dataInput.readDouble();
         //q8
         elderlyPopulation = dataInput.readDouble();
         //q9
@@ -216,7 +234,15 @@ public class MapMultiple implements Writable {
         dataOutput.writeDouble(rentValue16);
         //q7
         dataOutput.writeDouble(totalRooms);
-
+        dataOutput.writeDouble(oneRoom);
+        dataOutput.writeDouble(twoRooms);
+        dataOutput.writeDouble(threeRooms);
+        dataOutput.writeDouble(fourRooms);
+        dataOutput.writeDouble(fiveRooms);
+        dataOutput.writeDouble(sixRooms);
+        dataOutput.writeDouble(sevenRooms);
+        dataOutput.writeDouble(eightRooms);
+        dataOutput.writeDouble(nineRooms);
         //q8
         dataOutput.writeDouble(elderlyPopulation);
         //q9
@@ -357,6 +383,24 @@ public class MapMultiple implements Writable {
     //q7
     public double getTotalRooms() {return totalRooms;}
     public void setTotalRooms(double totalRooms) {this.totalRooms = totalRooms;}
+    public double getOneRoom() {return oneRoom;}
+    public void setOneRoom(double oneRoom) {this.oneRoom = oneRoom;}
+    public double getTwoRooms() {return twoRooms;}
+    public void setTwoRooms(double twoRooms) {this.twoRooms = twoRooms;}
+    public double getThreeRooms() {return threeRooms;}
+    public void setThreeRooms(double threeRooms) {this.threeRooms = threeRooms;}
+    public double getFourRooms() {return fourRooms;}
+    public void setFourRooms(double fourRooms) {this.fourRooms = fourRooms;}
+    public double getFiveRooms() {return fiveRooms;}
+    public void setFiveRooms(double fiveRooms) {this.fiveRooms = fiveRooms;}
+    public double getSixRooms() {return sixRooms;}
+    public void setSixRooms(double sixRooms) {this.sixRooms = sixRooms;}
+    public double getSevenRooms() {return sevenRooms;}
+    public void setSevenRooms(double sevenRooms) {this.sevenRooms = sevenRooms;}
+    public double getEightRooms() {return eightRooms;}
+    public void setEightRooms(double eightRooms) {this.eightRooms = eightRooms;}
+    public double getNineRooms() {return nineRooms;}
+    public void setNineRooms(double nineRooms) {this.nineRooms = nineRooms;}
 
     //q8
     public double getElderlyPopulation() {return elderlyPopulation;}
