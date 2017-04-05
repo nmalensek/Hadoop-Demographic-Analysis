@@ -182,6 +182,17 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                 mapMultiple.setRentValue14(Integer.parseInt(line.substring(3576, 3585)));
                 mapMultiple.setRentValue15(Integer.parseInt(line.substring(3585, 3594)));
                 mapMultiple.setRentValue16(Integer.parseInt(line.substring(3594, 3603)));
+
+                //question 7: 95th percentile of average rooms per house
+                int roomStartPosition = 2388;
+                int totalRooms = 0;
+                for (int i = 0; i < 9; i++) {
+                    totalRooms += Integer.parseInt(line.substring(roomStartPosition, roomStartPosition + 9));
+                    roomStartPosition += 9;
+                }
+
+                mapMultiple.setTotalRooms(totalRooms);
+
             }
 
             context.write(new Text(state), mapMultiple);

@@ -65,7 +65,9 @@ public class MapMultiple implements Writable {
     private double rentValue14;
     private double rentValue15;
     private double rentValue16;
+    private double totalRooms;
     private double elderlyPopulation;
+
 
     public MapMultiple() {}
 
@@ -141,7 +143,7 @@ public class MapMultiple implements Writable {
         rentValue15 = dataInput.readDouble();
         rentValue16 = dataInput.readDouble();
         //q7
-
+        totalRooms = dataInput.readDouble();
         //q8
         elderlyPopulation = dataInput.readDouble();
         //q9
@@ -210,6 +212,7 @@ public class MapMultiple implements Writable {
         dataOutput.writeDouble(rentValue15);
         dataOutput.writeDouble(rentValue16);
         //q7
+        dataOutput.writeDouble(totalRooms);
 
         //q8
         dataOutput.writeDouble(elderlyPopulation);
@@ -347,6 +350,8 @@ public class MapMultiple implements Writable {
     public void setRentValue16(double rentValue16) {this.rentValue16 = rentValue16;}
 
     //q7
+    public double getTotalRooms() {return totalRooms;}
+    public void setTotalRooms(double totalRooms) {this.totalRooms = totalRooms;}
 
     //q8
     public double getElderlyPopulation() {return elderlyPopulation;}

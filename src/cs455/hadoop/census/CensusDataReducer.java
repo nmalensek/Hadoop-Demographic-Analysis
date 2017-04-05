@@ -19,6 +19,9 @@ import java.util.*;
 
 public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
     private MultipleOutputs multipleOutputs;
+    private Map<Text, Double> elderlyMap = new HashMap<>();
+    Text mostElderlyState = new Text();
+    double currentMax = 0;
 
     public void setup(Context context) throws IOException, InterruptedException {
         multipleOutputs = new MultipleOutputs(context);
@@ -40,7 +43,6 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         Map<Integer, Double> rentRangeMap = new TreeMap<>();
         HouseRanges houseRanges = HouseRanges.getInstance();
         RentRanges rentRanges = RentRanges.getInstance();
-        Map<Text, Double> elderlyMap = new HashMap<>();
 
         double totalRent = 0;
         double totalOwn = 0;
@@ -97,7 +99,6 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         double rentValue15 = 0;
         double rentValue16 = 0;
         double elderlyPopulation = 0;
-        String mostElderlyState = "";
 
         for (MapMultiple val : values) {
             totalRent += val.getRent();
@@ -161,6 +162,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             rentValue16 += val.getRentValue16();
 
             elderlyPopulation += val.getElderlyPopulation();
+            elderlyMap.put(key, Double.parseDouble(calculatePercentage(elderlyPopulation, population)));
         }
 
         Double[] homeValueArray = {ownedHomeValue0, ownedHomeValue1, ownedHomeValue2, ownedHomeValue3,
@@ -179,8 +181,6 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         for (int i = 0; i < 17; i++) {
             rentRangeMap.put(rentRanges.getIntegerRents()[i], rentPaidArray[i]);
         }
-
-        elderlyMap.put(key, Double.parseDouble(calculatePercentage(elderlyPopulation, population)));
 
         multipleOutputs.write("question1", key, new Text(
                 " rent: " + calculatePercentage(totalRent, (totalRent + totalOwn)) + "% own: "
@@ -221,14 +221,15 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
         //q7
 
-        multipleOutputs.write("question8", key, new Text(
-                " " + stateWithMostElderlyPeople(elderlyMap)));
+        stateWithMostElderlyPeople(elderlyMap);
 
     }
 
     //must close multiple outputs, otherwise the results might not be written to output files
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
+        multipleOutputs.write("question8", mostElderlyState, new Text(
+                " " + currentMax + "%"));
         super.cleanup(context);
         multipleOutputs.close();
     }
@@ -276,15 +277,12 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         return relevantRange;
     }
 
-    private Text stateWithMostElderlyPeople(Map<Text, Double> stateElderlyMap) {
-        Text mostElderlyState = new Text();
-        Double currentMax = new Double(0);
+    private void stateWithMostElderlyPeople(Map<Text, Double> stateElderlyMap) {
         for (Text state : stateElderlyMap.keySet()) {
             if (stateElderlyMap.get(state) > currentMax) {
                 currentMax = stateElderlyMap.get(state);
-                mostElderlyState.set(state + ": " + currentMax + "%");
+                mostElderlyState.set(state);
             }
         }
-        return mostElderlyState;
     }
 }
