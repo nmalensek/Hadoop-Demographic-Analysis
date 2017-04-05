@@ -107,6 +107,10 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                     hispanicPopulationStartPosition += 9;
                 }
                 mapMultiple.setTotalHispanicPopulation(totalHispanicPopulation);
+
+                //question 8 % age > 85
+                int elderlypopulation = Integer.parseInt(line.substring(1065, 1074));
+                mapMultiple.setElderlyPopulation(elderlypopulation);
             }
 
             if(logicalPartNumber == 2) {

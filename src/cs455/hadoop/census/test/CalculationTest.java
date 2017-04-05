@@ -56,6 +56,12 @@ public class CalculationTest {
         }
     }
 
+    private void rentTest() {
+        for (int i = 3450; i < 3603; i = i+9) {
+            System.out.println("(" + i + ", " + (i+9) + ")");
+        }
+    }
+
     private void medianTest() {
         Map<String, Integer> testMap = new HashMap<>();
         HouseRanges houseRanges = HouseRanges.getInstance();
@@ -105,7 +111,8 @@ public class CalculationTest {
 //        System.out.println(calculationTest.calculatePercentage(5, 10));
 //        System.out.println(calculationTest.calculatePercentage(10, 0));
 //        calculationTest.femaleHispanicIterator();
-        calculationTest.medianTest();
+//        calculationTest.medianTest();
+        calculationTest.rentTest();
     }
 
 

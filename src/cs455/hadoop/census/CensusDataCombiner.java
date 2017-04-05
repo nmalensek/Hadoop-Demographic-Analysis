@@ -66,6 +66,7 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         double rentValue14 = 0;
         double rentValue15 = 0;
         double rentValue16 = 0;
+        double elderlyPopulation = 0;
 
         for (MapMultiple val : values) {
             totalRent += val.getRent();
@@ -127,6 +128,9 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
             rentValue14 += val.getRentValue14();
             rentValue15 += val.getRentValue15();
             rentValue16 += val.getRentValue16();
+
+            elderlyPopulation += val.getElderlyPopulation();
+
 
         }
 
@@ -190,6 +194,11 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         mapMultiple.setRentValue14(rentValue14);
         mapMultiple.setRentValue15(rentValue15);
         mapMultiple.setRentValue16(rentValue16);
+        //q7
+
+        //q8
+        mapMultiple.setElderlyPopulation(elderlyPopulation);
+        //q9
 
         context.write(key, mapMultiple);
     }
