@@ -40,6 +40,11 @@ public class CalculationTest {
         }
     }
 
+    private void testMultiply() {
+        double product = AKOwn * AKRent;
+        System.out.println(product);
+    }
+
     private void calcAdd() {
         totalMales = males1 + males2;
         System.out.println(totalMales);
@@ -57,8 +62,8 @@ public class CalculationTest {
     }
 
     private void rentTest() {
-        for (int i = 3450; i < 3603; i = i+9) {
-            System.out.println("(" + i + ", " + (i+9) + ")");
+        for (int i = 2388; i < 2469; i = i + 9) {
+            System.out.println("(" + i + ", " + (i + 9) + ")");
         }
     }
 
@@ -85,13 +90,13 @@ public class CalculationTest {
         int currentCount = 0;
         int iterations = 0;
         while (currentCount <= half) {
-                currentCount += sortedList.get(iterations);
-                iterations++;
+            currentCount += sortedList.get(iterations);
+            iterations++;
         }
 
         String median = "";
         for (String key : testMap.keySet()) {
-            if (sortedList.get(iterations-1) == testMap.get(key)) {
+            if (sortedList.get(iterations - 1) == testMap.get(key)) {
                 median = key;
             }
         }

@@ -192,8 +192,16 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                     totalRooms += Integer.parseInt(line.substring(roomStartPosition, roomStartPosition + 9));
                     roomStartPosition += 9;
                 }
-
                 mapMultiple.setTotalRooms(totalRooms);
+                mapMultiple.setOneRoom(Integer.parseInt(line.substring(2388, 2397)));
+                mapMultiple.setTwoRooms(Integer.parseInt(line.substring(2397, 2406)));
+                mapMultiple.setThreeRooms(Integer.parseInt(line.substring(2406, 2415)));
+                mapMultiple.setFourRooms(Integer.parseInt(line.substring(2415, 2424)));
+                mapMultiple.setFiveRooms(Integer.parseInt(line.substring(2424, 2433)));
+                mapMultiple.setSixRooms(Integer.parseInt(line.substring(2433, 2442)));
+                mapMultiple.setSevenRooms(Integer.parseInt(line.substring(2442, 2451)));
+                mapMultiple.setEightRooms(Integer.parseInt(line.substring(2451, 2460)));
+                mapMultiple.setNineRooms(Integer.parseInt(line.substring(2460, 2469)));
 
             }
 

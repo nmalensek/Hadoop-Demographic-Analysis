@@ -1,7 +1,6 @@
 package cs455.hadoop.census;
 
 import cs455.hadoop.census.ranges.HouseRanges;
-import cs455.hadoop.census.ranges.Ranges;
 import cs455.hadoop.census.ranges.RentRanges;
 import cs455.hadoop.census.util.MapMultiple;
 import org.apache.hadoop.io.Text;
@@ -12,16 +11,14 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 
-/**
- * Reducer: Input to the reducer is the output from the mapper. It receives word, list<count> pairs.
- * Sums up individual counts per given word. Emits <word, total count> pairs.
- */
-
 public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
     private MultipleOutputs multipleOutputs;
     private Map<Text, Double> elderlyMap = new HashMap<>();
-    Text mostElderlyState = new Text();
-    double currentMax = 0;
+    private Text mostElderlyState = new Text();
+    private Map<Double, Text> roomsMap = new TreeMap<>();
+    private double currentMax = 0;
+    private double ninetyFifthPercentile = 0;
+    private Text testResult = new Text();
 
     public void setup(Context context) throws IOException, InterruptedException {
         multipleOutputs = new MultipleOutputs(context);
@@ -33,6 +30,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         multipleOutputs.write("question4", new Text("\nQuestion 4"), new Text(" "));
         multipleOutputs.write("question5", new Text("\nQuestion 5"), new Text(" "));
         multipleOutputs.write("question6", new Text("\nQuestion 6"), new Text(" "));
+        multipleOutputs.write("question7", new Text("\nQuestion 7"), new Text(" "));
         multipleOutputs.write("question8", new Text("\nQuestion 8"), new Text(" "));
     }
 
@@ -99,7 +97,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         double rentValue14 = 0;
         double rentValue15 = 0;
         double rentValue16 = 0;
-        double totalRooms = 0;
+        double totalHouses = 0;
         double oneRoom = 0;
         double twoRooms = 0;
         double threeRooms = 0;
@@ -109,6 +107,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         double sevenRooms = 0;
         double eightRooms = 0;
         double nineRooms = 0;
+        double averageRooms = 0;
         double elderlyPopulation = 0;
 
         for (MapMultiple val : values) {
@@ -173,7 +172,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             rentValue15 += val.getRentValue15();
             rentValue16 += val.getRentValue16();
 
-            totalRooms += val.getTotalRooms();
+            totalHouses += val.getTotalRooms();
             oneRoom += val.getOneRoom();
             twoRooms += val.getTwoRooms();
             threeRooms += val.getThreeRooms();
@@ -204,6 +203,13 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         for (int i = 0; i < 17; i++) {
             rentRangeMap.put(rentRanges.getIntegerRents()[i], rentPaidArray[i]);
         }
+
+        Double[] roomArray = {oneRoom * 1, twoRooms * 2, threeRooms * 3, fourRooms * 4, fiveRooms * 5,
+                sixRooms * 6, sevenRooms * 7, eightRooms * 8, nineRooms * 9};
+
+        averageRooms = calculateAverageRooms(roomArray, totalHouses);
+
+        if (!Double.isNaN(averageRooms)) {roomsMap.put(averageRooms, key);}
 
         multipleOutputs.write("question1", key, new Text(
                 " rent: " + calculatePercentage(totalRent, (totalRent + totalOwn)) + "% own: "
@@ -237,21 +243,19 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
                         calculatePercentage((insideUrban + outsideUrban), (rural + insideUrban + outsideUrban + notDefined)) + "%"));
 
         multipleOutputs.write("question5", key, new Text(
-                calculatePercentile(houseRangeMap, houseRanges.getRanges(), totalOwnedHomes, 0.50)));
+                calculateMedian(houseRangeMap, houseRanges.getRanges(), totalOwnedHomes)));
 
         multipleOutputs.write("question6", key, new Text(
-                calculatePercentile(rentRangeMap, rentRanges.getRanges(), totalRenters, 0.50)));
-
-        //q7
+                calculateMedian(rentRangeMap, rentRanges.getRanges(), totalRenters)));
 
         stateWithMostElderlyPeople(elderlyMap);
-
     }
 
     //must close multiple outputs, otherwise the results might not be written to output files
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
         //question 8 written here so only the max value's output
+        multipleOutputs.write("question7", "95th percentile", new Text(" " + calculateNinetyFifthPercentile(roomsMap) + " rooms"));
         multipleOutputs.write("question8", mostElderlyState, new Text(
                 " " + currentMax + "%"));
         super.cleanup(context);
@@ -268,12 +272,12 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         }
     }
 
-    private String calculatePercentile(Map<Integer, Double> map, String[] dataArray, double totalNumber, double percentile) {
+    private String calculateMedian(Map<Integer, Double> map, String[] dataArray, double totalNumber) {
 //        double TOTAL = 0;
         int currentCount = 0;
         int iterations = 0;
 
-        double dividingPoint = totalNumber * percentile;
+        double dividingPoint = totalNumber * 0.50;
 
         for (Integer key : map.keySet()) {
             currentCount += map.get(key);
@@ -308,5 +312,52 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
                 mostElderlyState.set(state);
             }
         }
+    }
+
+    private double calculateAverageRooms(Double[] rooms, double totalHouses) {
+        double actualRoomQuantity = 0;
+        for (int i = 0; i < 9; i++) {
+            actualRoomQuantity += rooms[i];
+        }
+        return  actualRoomQuantity / totalHouses;
+    }
+
+    private String calculateNinetyFifthPercentile(Map<Double, Text> map) {
+        int currentCount = 0;
+        int iterations = 0;
+        double total = 0;
+
+        List<Double> stateList = new ArrayList<>();
+
+        for (Double key : map.keySet()) {
+            total += key;
+            stateList.add(key);
+        }
+
+        double dividingPoint = total * 0.95;
+
+        for (Double key : map.keySet()) {
+            currentCount += key;
+            iterations++;
+            if (currentCount > dividingPoint) {
+                break;
+            }
+        }
+
+        double ninetyFifthPercentileNumber = stateList.get(iterations-1);
+        DecimalFormat decimalFormat = new DecimalFormat("##.00");
+//        debug
+        String test = "";
+        test += iterations + ":" + dividingPoint + ":" + total + "\n" + map.values().toString() + "\n";
+        test += stateList.toString() + "\n";
+        for (Double key : map.keySet()) {
+            test += "[";
+            test += key.toString() + ", ";
+            test += map.get(key) + "]\n";
+        }
+        test += "***" + ninetyFifthPercentileNumber + "***";
+
+        testResult.set(test);
+        return test;
     }
 }

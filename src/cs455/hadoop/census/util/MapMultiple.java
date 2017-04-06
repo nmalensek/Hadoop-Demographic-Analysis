@@ -67,6 +67,8 @@ public class MapMultiple implements Writable {
     private double rentValue15;
     private double rentValue16;
     private double totalRooms;
+    private double averageRooms;
+    private double testAverageRooms;
     private double oneRoom;
     private double twoRooms;
     private double threeRooms;
@@ -155,6 +157,8 @@ public class MapMultiple implements Writable {
         rentValue16 = dataInput.readDouble();
         //q7
         totalRooms = dataInput.readDouble();
+        averageRooms = dataInput.readDouble();
+        testAverageRooms = dataInput.readDouble();
         oneRoom = dataInput.readDouble();
         twoRooms = dataInput.readDouble();
         threeRooms = dataInput.readDouble();
@@ -234,6 +238,8 @@ public class MapMultiple implements Writable {
         dataOutput.writeDouble(rentValue16);
         //q7
         dataOutput.writeDouble(totalRooms);
+        dataOutput.writeDouble(averageRooms);
+        dataOutput.writeDouble(testAverageRooms);
         dataOutput.writeDouble(oneRoom);
         dataOutput.writeDouble(twoRooms);
         dataOutput.writeDouble(threeRooms);
@@ -383,6 +389,8 @@ public class MapMultiple implements Writable {
     //q7
     public double getTotalRooms() {return totalRooms;}
     public void setTotalRooms(double totalRooms) {this.totalRooms = totalRooms;}
+    public double getAverageRooms() {return averageRooms;}
+    public void setAverageRooms(double averageRooms) {this.averageRooms = averageRooms;}
     public double getOneRoom() {return oneRoom;}
     public void setOneRoom(double oneRoom) {this.oneRoom = oneRoom;}
     public double getTwoRooms() {return twoRooms;}

@@ -77,6 +77,7 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         double sevenRooms = 0;
         double eightRooms = 0;
         double nineRooms = 0;
+        double averageRooms = 0;
         double elderlyPopulation = 0;
 
         for (MapMultiple val : values) {
