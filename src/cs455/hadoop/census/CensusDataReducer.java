@@ -21,16 +21,26 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
     public void setup(Context context) throws IOException, InterruptedException {
         multipleOutputs = new MultipleOutputs(context);
-        multipleOutputs.write("question1", new Text("\nQuestion 1"), new Text(" "));
-        multipleOutputs.write("question2", new Text("\nQuestion 2"), new Text(" "));
-        multipleOutputs.write("question3a", new Text("\nQuestion 3a"), new Text(" "));
-        multipleOutputs.write("question3b", new Text("\nQuestion 3b"), new Text(" "));
-        multipleOutputs.write("question3c", new Text("\nQuestion 3c"), new Text(" "));
-        multipleOutputs.write("question4", new Text("\nQuestion 4"), new Text(" "));
-        multipleOutputs.write("question5", new Text("\nQuestion 5"), new Text(" "));
-        multipleOutputs.write("question6", new Text("\nQuestion 6"), new Text(" "));
-        multipleOutputs.write("question7", new Text("\nQuestion 7"), new Text(" "));
-        multipleOutputs.write("question8", new Text("\nQuestion 8"), new Text(" "));
+        multipleOutputs.write("question1", new Text("\nQuestion 1:\n" +
+                "Percentage of residences rented vs. owned"), new Text(" \n"));
+        multipleOutputs.write("question2", new Text("\nQuestion 2:\n" +
+        "Percentage of males and females of the state population that never married"), new Text(" \n"));
+        multipleOutputs.write("question3a", new Text("\nQuestion 3a:\n" +
+                "Percentage of hispanic population <= 18 years old"), new Text(" \n"));
+        multipleOutputs.write("question3b", new Text("\nQuestion 3b:\n" +
+                "Percentage of hispanic population >= 19 and <= 29"), new Text(" \n"));
+        multipleOutputs.write("question3c", new Text("\nQuestion 3c:\n" +
+                "Percentage of hispanic population >= 30 and <= 39"), new Text(" \n"));
+        multipleOutputs.write("question4", new Text("\nQuestion 4:\n" +
+                "Percentage of rural households vs. urban households"), new Text(" \n"));
+        multipleOutputs.write("question5", new Text("\nQuestion 5:\n" +
+                "Median value of houses occupied by owners"), new Text(" \n"));
+        multipleOutputs.write("question6", new Text("\nQuestion 6:\n" +
+                "Median rent paid by households"), new Text(" \n"));
+        multipleOutputs.write("question7", new Text("\nQuestion 7:\n" +
+                "95th percentile of the average number of rooms per house"), new Text(" \n"));
+        multipleOutputs.write("question8", new Text("\nQuestion 8:\n" +
+                "State that has the highest percentage of people aged > 85"), new Text(" \n"));
     }
 
     @Override
@@ -188,41 +198,41 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         }
 
         multipleOutputs.write("question1", key, new Text(
-                " rent: " + calculatePercentage(totalRent, (totalRent + totalOwn)) + "% own: "
+                " rent: " + calculatePercentage(totalRent, (totalRent + totalOwn)) + "% | own: "
                         + calculatePercentage(totalOwn, (totalRent + totalOwn)) + "%"));
 
         multipleOutputs.write("question2", key, new Text(
-                " Males never married: " +
+                " Males: " +
                         calculatePercentage(totalMalesNeverMarried, (population))
-                        + "% Females never married: " +
+                        + "% | Females: " +
                         calculatePercentage(totalFemalesNeverMarried, (population)) + "%"));
 
         multipleOutputs.write("question3a", key, new Text(
-                " Percent males <= 18: " + calculatePercentage(hispanicMalesUnder18, totalHispanicPopulation) +
-                        "% Percent females <= 18: " + calculatePercentage(hispanicFemalesUnder18, totalHispanicPopulation) +
+                " Males: " + calculatePercentage(hispanicMalesUnder18, totalHispanicPopulation) +
+                        "% | Females: " + calculatePercentage(hispanicFemalesUnder18, totalHispanicPopulation) +
                         "%"));
 
         multipleOutputs.write("question3b", key, new Text(
-                " Percent males 19 to 29: " + calculatePercentage(hispanicMales19to29, totalHispanicPopulation) +
-                        "% Percent females 19 to 29: " + calculatePercentage(hispanicFemales19to29, totalHispanicPopulation) +
+                " Males: " + calculatePercentage(hispanicMales19to29, totalHispanicPopulation) +
+                        "% | Females: " + calculatePercentage(hispanicFemales19to29, totalHispanicPopulation) +
                         "%"));
 
         multipleOutputs.write("question3c", key, new Text(
-                " Percent males 30 to 39: " + calculatePercentage(hispanicMales30to39, totalHispanicPopulation) +
-                        "% Percent females 30 to 39: " + calculatePercentage(hispanicFemales30to39, totalHispanicPopulation) +
+                " Males: " + calculatePercentage(hispanicMales30to39, totalHispanicPopulation) +
+                        "% | Females: " + calculatePercentage(hispanicFemales30to39, totalHispanicPopulation) +
                         "%"));
 
         multipleOutputs.write("question4", key, new Text(
-                " Percent rural: "
+                " Rural: "
                         + calculatePercentage(rural, (rural + insideUrban + outsideUrban + notDefined)) +
-                        "% Percent urban: " +
+                        "% | Urban: " +
                         calculatePercentage((insideUrban + outsideUrban), (rural + insideUrban + outsideUrban + notDefined)) + "%"));
 
         multipleOutputs.write("question5", key, new Text(
-                calculateMedian(houseRangeMap, houseRanges.getRanges(), totalOwnedHomes)));
+                " " + calculateMedian(houseRangeMap, houseRanges.getRanges(), totalOwnedHomes)));
 
         multipleOutputs.write("question6", key, new Text(
-                calculateMedian(rentRangeMap, rentRanges.getRanges(), totalRenters)));
+                " " + calculateMedian(rentRangeMap, rentRanges.getRanges(), totalRenters)));
 
         stateWithMostElderlyPeople(elderlyMap);
     }
@@ -231,7 +241,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
         //question 7 and 8 written here so only one value's output
-        multipleOutputs.write("question7", "95th percentile: ", new Text(calculateNinetyFifthPercentile(averageList) + " rooms"));
+        multipleOutputs.write("question7", "", new Text(calculateNinetyFifthPercentile(averageList) + " rooms"));
         multipleOutputs.write("question8", mostElderlyState, new Text(
                 " " + currentMax + "%"));
         super.cleanup(context);
