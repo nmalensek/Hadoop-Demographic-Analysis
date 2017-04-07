@@ -4,10 +4,7 @@ import cs455.hadoop.census.ranges.HouseRanges;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CalculationTest {
 
@@ -67,6 +64,33 @@ public class CalculationTest {
         }
     }
 
+    private void iteratorTest() {
+        List<Double> averageList = new ArrayList<>();
+        double total = 0;
+        BigDecimal ninetyFifthPercentile = null;
+
+        for (double i = 0; i < 100; i++) {
+            averageList.add(i);
+            total += i;
+        }
+        double rawPercentile = averageList.size() * 0.95;
+
+        if (rawPercentile % 1 == 0) { ninetyFifthPercentile = new BigDecimal(rawPercentile).setScale(0); }
+        if (rawPercentile % 1 != 0) { ninetyFifthPercentile = new BigDecimal(rawPercentile).setScale(0, BigDecimal.ROUND_UP); }
+        int ninetyFifthPercentilePosition = ninetyFifthPercentile.intValueExact();
+
+        double ninetyFifthPercentileNumber = averageList.get(ninetyFifthPercentilePosition-1);
+
+        System.out.println("total: " + total);
+        System.out.println(averageList.size());
+        System.out.println(averageList);
+        System.out.println(rawPercentile);
+        System.out.println(ninetyFifthPercentilePosition);
+        System.out.println(ninetyFifthPercentileNumber);
+        System.out.println(averageList.get(ninetyFifthPercentilePosition-1));
+
+    }
+
     private void medianTest() {
         Map<String, Integer> testMap = new HashMap<>();
         HouseRanges houseRanges = HouseRanges.getInstance();
@@ -117,7 +141,8 @@ public class CalculationTest {
 //        System.out.println(calculationTest.calculatePercentage(10, 0));
 //        calculationTest.femaleHispanicIterator();
 //        calculationTest.medianTest();
-        calculationTest.rentTest();
+//        calculationTest.rentTest();
+        calculationTest.iteratorTest();
     }
 
 
