@@ -38,16 +38,30 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
         double totalPopulation = 0;
         double totalMalesNeverMarried = 0;
         double totalFemalesNeverMarried = 0;
+        double totalHispanicPopulation = 0;
+        double hispanicMalesUnder18 = 0;
+        double hispanicFemalesUnder18 = 0;
+        double hispanicMales19to29 = 0;
+        double hispanicFemales19to29 = 0;
+        double hispanicMales30to39 = 0;
+        double hispanicFemales30to39 = 0;
 
         for (CustomWritable cw : values) {
-            totalRent = Double.parseDouble(cw.getQuestionOne().split(":")[0]);
-            totalOwn = Double.parseDouble(cw.getQuestionOne().split(":")[1]);
+            totalRent += Double.parseDouble(cw.getQuestionOne().split(":")[0]);
+            totalOwn += Double.parseDouble(cw.getQuestionOne().split(":")[1]);
 
-            totalPopulation = Double.parseDouble(cw.getQuestionTwo().split(":")[0]);
-            totalMalesNeverMarried = Double.parseDouble(cw.getQuestionTwo().split(":")[1]);
-            totalFemalesNeverMarried = Double.parseDouble(cw.getQuestionTwo().split(":")[2]);
+            totalPopulation += Double.parseDouble(cw.getQuestionTwo().split(":")[0]);
+            totalMalesNeverMarried += Double.parseDouble(cw.getQuestionTwo().split(":")[1]);
+            totalFemalesNeverMarried += Double.parseDouble(cw.getQuestionTwo().split(":")[2]);
+
+            totalHispanicPopulation += Double.parseDouble(cw.getQuestionThree().split(":")[0]);
+            hispanicMalesUnder18 += Double.parseDouble(cw.getQuestionThree().split(":")[1]);
+            hispanicMales19to29 += Double.parseDouble(cw.getQuestionThree().split(":")[2]);
+            hispanicMales30to39 += Double.parseDouble(cw.getQuestionThree().split(":")[3]);
+            hispanicFemalesUnder18 += Double.parseDouble(cw.getQuestionThree().split(":")[4]);
+            hispanicFemales19to29 += Double.parseDouble(cw.getQuestionThree().split(":")[5]);
+            hispanicFemales30to39 += Double.parseDouble(cw.getQuestionThree().split(":")[6]);
         }
-
 
         multipleOutputs.write("question1", key, new Text(
                 " rent: " + calculatePercentage(totalRent, (totalRent + totalOwn)) + "% own: "
@@ -58,6 +72,21 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
                         calculatePercentage(totalMalesNeverMarried, totalPopulation)
                         + "% Females never married: " +
                         calculatePercentage(totalFemalesNeverMarried, totalPopulation) + "%"));
+
+        multipleOutputs.write("question3a", key, new Text(
+                " Males: " + calculatePercentage(hispanicMalesUnder18, totalHispanicPopulation) +
+                        "% | Females: " + calculatePercentage(hispanicFemalesUnder18, totalHispanicPopulation) +
+                        "%"));
+
+        multipleOutputs.write("question3b", key, new Text(
+                " Males: " + calculatePercentage(hispanicMales19to29, totalHispanicPopulation) +
+                        "% | Females: " + calculatePercentage(hispanicFemales19to29, totalHispanicPopulation) +
+                        "%"));
+
+        multipleOutputs.write("question3c", key, new Text(
+                " Males: " + calculatePercentage(hispanicMales30to39, totalHispanicPopulation) +
+                        "% | Females: " + calculatePercentage(hispanicFemales30to39, totalHispanicPopulation) +
+                        "%"));
 
     }
 

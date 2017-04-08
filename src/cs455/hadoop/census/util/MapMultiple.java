@@ -79,7 +79,12 @@ public class MapMultiple implements Writable {
     private double eightRooms;
     private double nineRooms;
     private double elderlyPopulation;
-
+    private double urbanPopulation;
+    private double ruralPopulation;
+    private double childrenUnder1To11;
+    private double children12To17;
+    private double hispanicChildrenUnder1To11;
+    private double hispanicChildren12To17;
 
     public MapMultiple() {}
 
@@ -171,6 +176,12 @@ public class MapMultiple implements Writable {
         //q8
         elderlyPopulation = dataInput.readDouble();
         //q9
+        urbanPopulation = dataInput.readDouble();
+        ruralPopulation = dataInput.readDouble();
+        childrenUnder1To11 = dataInput.readDouble();
+        children12To17 = dataInput.readDouble();
+        hispanicChildrenUnder1To11 = dataInput.readDouble();
+        hispanicChildren12To17 = dataInput.readDouble();
     }
 
     @Override
@@ -252,6 +263,12 @@ public class MapMultiple implements Writable {
         //q8
         dataOutput.writeDouble(elderlyPopulation);
         //q9
+        dataOutput.writeDouble(urbanPopulation);
+        dataOutput.writeDouble(ruralPopulation);
+        dataOutput.writeDouble(childrenUnder1To11);
+        dataOutput.writeDouble(children12To17);
+        dataOutput.writeDouble(hispanicChildrenUnder1To11);
+        dataOutput.writeDouble(hispanicChildren12To17);
     }
 
     //q1
@@ -413,6 +430,20 @@ public class MapMultiple implements Writable {
     //q8
     public double getElderlyPopulation() {return elderlyPopulation;}
     public void setElderlyPopulation(double elderlyPopulation) {this.elderlyPopulation = elderlyPopulation;}
+
+    //q9
+    public double getUrbanPopulation() {return urbanPopulation;}
+    public void setUrbanPopulation(double urbanPopulation) {this.urbanPopulation = urbanPopulation;}
+    public double getRuralPopulation() {return ruralPopulation;}
+    public void setRuralPopulation(double ruralPopulation) {this.ruralPopulation = ruralPopulation;}
+    public double getChildrenUnder1To11() {return childrenUnder1To11;}
+    public void setChildrenUnder1To11(double childrenUnder1To11) {this.childrenUnder1To11 = childrenUnder1To11;}
+    public double getChildren12To17() {return children12To17;}
+    public void setChildren12To17(double children12To17) {this.children12To17 = children12To17;}
+    public double getHispanicChildrenUnder1To11() {return hispanicChildrenUnder1To11;}
+    public void setHispanicChildrenUnder1To11(double hispanicChildrenUnder1To11) {this.hispanicChildrenUnder1To11 = hispanicChildrenUnder1To11;}
+    public double getHispanicChildren12To17() {return hispanicChildren12To17;}
+    public void setHispanicChildren12To17(double hispanicChildren12To17) {this.hispanicChildren12To17 = hispanicChildren12To17;}
 
     @Override
     public String toString() {

@@ -109,8 +109,71 @@ public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultip
                 mapMultiple.setTotalHispanicPopulation(totalHispanicPopulation);
 
                 //question 8 % age > 85
-                int elderlypopulation = Integer.parseInt(line.substring(1065, 1074));
-                mapMultiple.setElderlyPopulation(elderlypopulation);
+                int elderlyPopulation = Integer.parseInt(line.substring(1065, 1074));
+                mapMultiple.setElderlyPopulation(elderlyPopulation);
+
+                //question 9 custom: how does percentage of urban vs. rural population affect the percentage of population
+                //aged <1-11 and 12-17 with hispanic and non-hispanic backgrounds?
+
+                int urbanPopulation = Integer.parseInt(line.substring(327, 336));
+                int ruralPopulation = Integer.parseInt(line.substring(336, 345));
+                mapMultiple.setUrbanPopulation(urbanPopulation);
+                mapMultiple.setRuralPopulation(ruralPopulation);
+
+                int childrenUnder1To11 = 0;
+                int smallChildrenStartPosition = 795;
+                for (int i = 0; i < 7; i++) {
+                    childrenUnder1To11 += Integer.parseInt(
+                            line.substring(smallChildrenStartPosition, smallChildrenStartPosition + 9));
+                    smallChildrenStartPosition += 9;
+                }
+                mapMultiple.setChildrenUnder1To11(childrenUnder1To11);
+
+                int children12To17 = 0;
+                int teenChildrenStartPosition = 858;
+                for (int i = 0; i < 5; i++) {
+                    children12To17 += Integer.parseInt(
+                            line.substring(teenChildrenStartPosition, teenChildrenStartPosition + 9));
+                    teenChildrenStartPosition += 9;
+                }
+                mapMultiple.setChildren12To17(children12To17);
+
+                int hispanicMalesUnder1To11 = 0;
+                int hispanicChildrenStartPosition = 3864;
+                for (int i = 0; i < 7; i++) {
+                    hispanicMalesUnder1To11 += Integer.parseInt(
+                            line.substring(hispanicChildrenStartPosition, hispanicChildrenStartPosition + 9));
+                    hispanicChildrenStartPosition += 9;
+                }
+
+                int hispanicFemalesUnder1To11 = 0;
+                int hispanicFemaleChildrenStartPosition = 3864;
+                for (int i = 0; i < 7; i++) {
+                    hispanicFemalesUnder1To11 += Integer.parseInt(
+                            line.substring(hispanicFemaleChildrenStartPosition, hispanicFemaleChildrenStartPosition + 9));
+                    hispanicFemaleChildrenStartPosition += 9;
+                }
+
+                mapMultiple.setHispanicChildrenUnder1To11(hispanicMalesUnder1To11 + hispanicFemalesUnder1To11);
+
+                int hispanicMales12To17 = 0;
+                int hispanicMales12To17Start = 3927;
+                for (int i = 0; i < 5; i++) {
+                    hispanicMales12To17 += Integer.parseInt(
+                            line.substring(hispanicMales12To17Start, hispanicMales12To17Start + 9));
+                    hispanicMales12To17Start += 9;
+                }
+
+                int hispanicFemales12To17 = 0;
+                int hispanicFemales12To17Start = 3927;
+                for (int i = 0; i < 5; i++) {
+                    hispanicFemales12To17 += Integer.parseInt(
+                            line.substring(hispanicFemales12To17Start, hispanicFemales12To17Start + 9));
+                    hispanicFemales12To17Start += 9;
+                }
+
+                mapMultiple.setHispanicChildren12To17(hispanicMales12To17 + hispanicFemales12To17);
+
             }
 
             if(logicalPartNumber == 2) {

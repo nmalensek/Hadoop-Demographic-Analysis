@@ -24,7 +24,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         multipleOutputs.write("question1", new Text("\nQuestion 1:\n" +
                 "Percentage of residences rented vs. owned"), new Text(" \n"));
         multipleOutputs.write("question2", new Text("\nQuestion 2:\n" +
-        "Percentage of males and females of the state population that never married"), new Text(" \n"));
+                "Percentage of males and females of the state population that never married"), new Text(" \n"));
         multipleOutputs.write("question3a", new Text("\nQuestion 3a:\n" +
                 "Percentage of hispanic population <= 18 years old"), new Text(" \n"));
         multipleOutputs.write("question3b", new Text("\nQuestion 3b:\n" +
@@ -41,6 +41,9 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
                 "95th percentile of the average number of rooms per house"), new Text(" \n"));
         multipleOutputs.write("question8", new Text("\nQuestion 8:\n" +
                 "State that has the highest percentage of people aged > 85"), new Text(" \n"));
+        multipleOutputs.write("question9", new Text("\nQuestion 9:\n" +
+                        "Does the amount of urban and rural population influence the population of children < 17 per state?"),
+                new Text(" \n"));
     }
 
     @Override
@@ -110,6 +113,13 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         double averageRooms = 0;
         double elderlyPopulation = 0;
 
+        double urbanPopulation = 0;
+        double ruralPopulation = 0;
+        double childrenUnder1To11 = 0;
+        double children12To17 = 0;
+        double hispanicChildrenUnder1To11 = 0;
+        double hispanicChildren12To17 = 0;
+
         for (MapMultiple val : values) {
             totalRent += val.getRent();
             totalOwn += val.getOwn();
@@ -176,9 +186,18 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
             elderlyPopulation += val.getElderlyPopulation();
             elderlyMap.put(key, Double.parseDouble(calculatePercentage(elderlyPopulation, population)));
+
+            urbanPopulation += val.getUrbanPopulation();
+            ruralPopulation += val.getRuralPopulation();
+            childrenUnder1To11 += val.getChildrenUnder1To11();
+            children12To17 += val.getChildren12To17();
+            hispanicChildrenUnder1To11 += val.getHispanicChildrenUnder1To11();
+            hispanicChildren12To17 += val.getHispanicChildren12To17();
         }
 
-        if(averageRooms != 0) {averageList.add(averageRooms);}
+        if (averageRooms != 0) {
+            averageList.add(averageRooms);
+        }
 
         Double[] homeValueArray = {ownedHomeValue0, ownedHomeValue1, ownedHomeValue2, ownedHomeValue3,
                 ownedHomeValue4, ownedHomeValue5, ownedHomeValue6, ownedHomeValue7, ownedHomeValue8, ownedHomeValue9,
@@ -233,6 +252,14 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
         multipleOutputs.write("question6", key, new Text(
                 " " + calculateMedian(rentRangeMap, rentRanges.getRanges(), totalRenters)));
+
+        multipleOutputs.write("question9", key, new Text(
+                calculatePercentage(urbanPopulation, population) + ":" +
+                        calculatePercentage(ruralPopulation, population) +
+                        ":" + calculatePercentage(childrenUnder1To11, population) +
+                        ":" + calculatePercentage(children12To17, population) +
+                        ":" + calculatePercentage(hispanicChildrenUnder1To11, population) +
+                        ":" + calculatePercentage(hispanicChildren12To17, population)));
 
         stateWithMostElderlyPeople(elderlyMap);
     }
@@ -313,11 +340,15 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
         double rawPercentile = list.size() * 0.95;
 
-        if (rawPercentile % 1 == 0) { ninetyFifthPercentile = new BigDecimal(rawPercentile).setScale(0); }
-        if (rawPercentile % 1 != 0) { ninetyFifthPercentile = new BigDecimal(rawPercentile).setScale(0, BigDecimal.ROUND_UP); }
+        if (rawPercentile % 1 == 0) {
+            ninetyFifthPercentile = new BigDecimal(rawPercentile).setScale(0);
+        }
+        if (rawPercentile % 1 != 0) {
+            ninetyFifthPercentile = new BigDecimal(rawPercentile).setScale(0, BigDecimal.ROUND_UP);
+        }
         int ninetyFifthPercentilePosition = ninetyFifthPercentile.intValueExact();
 
-        double ninetyFifthPercentileNumber = list.get(ninetyFifthPercentilePosition-1);
+        double ninetyFifthPercentileNumber = list.get(ninetyFifthPercentilePosition - 1);
 
         String answer = Double.toString(ninetyFifthPercentileNumber);
 //        debug

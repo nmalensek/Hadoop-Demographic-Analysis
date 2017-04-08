@@ -80,6 +80,12 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         double nineRooms = 0;
         double averageRooms = 0;
         double elderlyPopulation = 0;
+        double urbanPopulation = 0;
+        double ruralPopulation = 0;
+        double childrenUnder1To11 = 0;
+        double children12To17 = 0;
+        double hispanicChildrenUnder1To11 = 0;
+        double hispanicChildren12To17 = 0;
 
         for (MapMultiple val : values) {
             totalRent += val.getRent();
@@ -155,6 +161,13 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
             nineRooms += val.getNineRooms();
 
             elderlyPopulation += val.getElderlyPopulation();
+
+            urbanPopulation += val.getUrbanPopulation();
+            ruralPopulation += val.getRuralPopulation();
+            childrenUnder1To11 += val.getChildrenUnder1To11();
+            children12To17 += val.getChildren12To17();
+            hispanicChildrenUnder1To11 += val.getHispanicChildrenUnder1To11();
+            hispanicChildren12To17 += val.getHispanicChildren12To17();
         }
 
         //q1
@@ -245,6 +258,12 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         //q8
         mapMultiple.setElderlyPopulation(elderlyPopulation);
         //q9
+        mapMultiple.setUrbanPopulation(urbanPopulation);
+        mapMultiple.setRuralPopulation(ruralPopulation);
+        mapMultiple.setChildrenUnder1To11(childrenUnder1To11);
+        mapMultiple.setChildren12To17(children12To17);
+        mapMultiple.setHispanicChildrenUnder1To11(hispanicChildrenUnder1To11);
+        mapMultiple.setHispanicChildren12To17(hispanicChildren12To17);
 
         context.write(key, mapMultiple);
     }

@@ -13,7 +13,7 @@ public class CustomWritable implements Writable {
     //because not all mapped files will contain question data
     private String questionOne = "0:0";
     private String questionTwo = "0:0:0";
-    private String questionThree;
+    private String questionThree = "0:0:0:0:0:0:0";
     private String questionFour;
     private String questionFive;
     private String questionSix;
@@ -27,12 +27,14 @@ public class CustomWritable implements Writable {
     public void readFields(DataInput dataInput) throws IOException {
         questionOne = WritableUtils.readString(dataInput);
         questionTwo = WritableUtils.readString(dataInput);
+        questionThree = WritableUtils.readString(dataInput);
     }
 
     @Override
     public void write(DataOutput dataOutput) throws IOException {
         WritableUtils.writeString(dataOutput, questionOne);
         WritableUtils.writeString(dataOutput, questionTwo);
+        WritableUtils.writeString(dataOutput, questionThree);
     }
 
     public String getQuestionOne() {return questionOne;}
@@ -40,4 +42,7 @@ public class CustomWritable implements Writable {
 
     public String getQuestionTwo() {return questionTwo;}
     public void setQuestionTwo(String questionTwo) {this.questionTwo = questionTwo;}
+
+    public String getQuestionThree() {return questionThree;}
+    public void setQuestionThree(String questionThree) {this.questionThree = questionThree;}
 }

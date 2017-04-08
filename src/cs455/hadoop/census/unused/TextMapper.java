@@ -32,75 +32,83 @@ public class TextMapper extends Mapper<LongWritable, Text, Text, CustomWritable>
                 int totalPopulation = Integer.parseInt(line.substring(300, 309));
                 int maleNeverMarried = Integer.parseInt(line.substring(4422, 4431));
 
-                String femaleNeverMarried = line.substring(4467, 4476);
+                int femaleNeverMarried = Integer.parseInt(line.substring(4467, 4476));
 
                 String neverMarriedPopulation =
                         totalPopulation + ":" + maleNeverMarried + ":" + femaleNeverMarried;
                 customWritable.setQuestionTwo(neverMarriedPopulation);
 
-//                //question 3a males
-//                int hispanicMalesUnder18 = 0;
-//                int hispanicMaleStartPosition = 3864;
-//                for (int i = 0; i < 13; i++) {
-//                    hispanicMalesUnder18 += Integer.parseInt(
-//                            line.substring(hispanicMaleStartPosition, hispanicMaleStartPosition + 9));
-//                    hispanicMaleStartPosition += 9;
-//                }
-//                mapMultiple.setHispanicMalesUnder18(hispanicMalesUnder18);
-//
-//                //question 3a females
-//                int hispanicFemalesUnder18 = 0;
-//                int hispanicFemaleStartPosition = 4143;
-//                for (int i = 0; i < 13; i++) {
-//                    hispanicFemalesUnder18 += Integer.parseInt(
-//                            line.substring(hispanicFemaleStartPosition, hispanicFemaleStartPosition + 9));
-//                    hispanicFemaleStartPosition += 9;
-//                }
-//                mapMultiple.setHispanicFemalesUnder18(hispanicFemalesUnder18);
-//
-//
-//                //question 3b males
-//                int hispanicMales19to29 = 0;
-//                int hispanicMale19to29StartPosition = 3981;
-//                for (int i = 0; i < 5; i++) {
-//                    hispanicMales19to29 += Integer.parseInt(
-//                            line.substring(hispanicMale19to29StartPosition, hispanicMale19to29StartPosition + 9));
-//                    hispanicMaleStartPosition += 9;
-//                }
-//                mapMultiple.setHispanicMales19to29(hispanicMales19to29);
-//
-//                //question 3b females
-//                int hispanicFemales19to29 = 0;
-//                int hispanicFemale19to29StartPosition = 4260;
-//                for (int i = 0; i < 5; i++) {
-//                    hispanicFemales19to29 += Integer.parseInt(
-//                            line.substring(hispanicFemale19to29StartPosition, hispanicFemale19to29StartPosition + 9));
-//                    hispanicFemale19to29StartPosition += 9;
-//                }
-//                mapMultiple.setHispanicFemales19to29(hispanicFemales19to29);
-//
-//                //question 3c males
-//                int hispanicMales30to34 = Integer.parseInt(line.substring(4026, 4035));
-//                int hispanicMales35to39 = Integer.parseInt(line.substring(4035, 4044));
-//                int hispanicMales30to39 = hispanicMales30to34 + hispanicMales35to39;
-//                mapMultiple.setHispanicMales30to39(hispanicMales30to39);
-//
-//                //question 3c females
-//                int hispanicFemales30to34 = Integer.parseInt(line.substring(4305, 4314));
-//                int hispanicFemales35to39 = Integer.parseInt(line.substring(4314, 4323));
-//                int hispanicFemales30to39 = hispanicFemales30to34 + hispanicFemales35to39;
-//                mapMultiple.setHispanicFemales30to39(hispanicFemales30to39);
-//
-//                //question 3 total hispanic population
-//                //62 is number of sections dedicated to hispanic population (31 each gender)
-//                int totalHispanicPopulation = 0;
-//                int hispanicPopulationStartPosition = 3864;
-//                for (int i = 0; i < 62; i++) {
-//                    totalHispanicPopulation += Integer.parseInt(
-//                            line.substring(hispanicPopulationStartPosition, hispanicPopulationStartPosition + 9));
-//                    hispanicPopulationStartPosition += 9;
-//                }
-//                mapMultiple.setTotalHispanicPopulation(totalHispanicPopulation);
+                //question 3a males
+                int hispanicMalesUnder18 = 0;
+                int hispanicMaleStartPosition = 3864;
+                for (int i = 0; i < 13; i++) {
+                    hispanicMalesUnder18 += Integer.parseInt(
+                            line.substring(hispanicMaleStartPosition, hispanicMaleStartPosition + 9));
+                    hispanicMaleStartPosition += 9;
+                }
+                String malesUnder18 = String.valueOf(hispanicMalesUnder18);
+
+                //question 3a females
+                int hispanicFemalesUnder18 = 0;
+                int hispanicFemaleStartPosition = 4143;
+                for (int i = 0; i < 13; i++) {
+                    hispanicFemalesUnder18 += Integer.parseInt(
+                            line.substring(hispanicFemaleStartPosition, hispanicFemaleStartPosition + 9));
+                    hispanicFemaleStartPosition += 9;
+                }
+                String femalesUnder18 = String.valueOf(hispanicFemalesUnder18);
+
+                //question 3b males
+                int hispanicMales19to29 = 0;
+                int hispanicMale19to29StartPosition = 3981;
+                for (int i = 0; i < 5; i++) {
+                    hispanicMales19to29 += Integer.parseInt(
+                            line.substring(hispanicMale19to29StartPosition, hispanicMale19to29StartPosition + 9));
+                    hispanicMaleStartPosition += 9;
+                }
+                String males19to29 = String.valueOf(hispanicMales19to29);
+
+                //question 3b females
+                int hispanicFemales19to29 = 0;
+                int hispanicFemale19to29StartPosition = 4260;
+                for (int i = 0; i < 5; i++) {
+                    hispanicFemales19to29 += Integer.parseInt(
+                            line.substring(hispanicFemale19to29StartPosition, hispanicFemale19to29StartPosition + 9));
+                    hispanicFemale19to29StartPosition += 9;
+                }
+                String females19to29 = String.valueOf(hispanicFemales19to29);
+
+                //question 3c males
+                int hispanicMales30to34 = Integer.parseInt(line.substring(4026, 4035));
+                int hispanicMales35to39 = Integer.parseInt(line.substring(4035, 4044));
+                int hispanicMales30to39 = hispanicMales30to34 + hispanicMales35to39;
+                String males30to39 = String.valueOf(hispanicMales30to39);
+
+                //question 3c females
+                int hispanicFemales30to34 = Integer.parseInt(line.substring(4305, 4314));
+                int hispanicFemales35to39 = Integer.parseInt(line.substring(4314, 4323));
+                int hispanicFemales30to39 = hispanicFemales30to34 + hispanicFemales35to39;
+                String females30to39 = String.valueOf(hispanicFemales30to39);
+
+                //question 3 total hispanic population
+                //62 is number of sections dedicated to hispanic population (31 each gender)
+                int totalHispanicPopulation = 0;
+                int hispanicPopulationStartPosition = 3864;
+                for (int i = 0; i < 62; i++) {
+                    totalHispanicPopulation += Integer.parseInt(
+                            line.substring(hispanicPopulationStartPosition, hispanicPopulationStartPosition + 9));
+                    hispanicPopulationStartPosition += 9;
+                }
+
+                customWritable.setQuestionThree(
+                        totalHispanicPopulation + ":" +
+                                malesUnder18 + ":" +
+                                males19to29 + ":" +
+                                males30to39 + ":" +
+                                femalesUnder18 + ":" +
+                                females19to29 + ":" +
+                                females30to39
+                );
             }
 
             if (logicalPartNumber == 2) {
