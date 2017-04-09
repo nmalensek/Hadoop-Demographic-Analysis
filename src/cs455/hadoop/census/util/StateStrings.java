@@ -59,4 +59,13 @@ public class StateStrings {
             "WV",
             "WY"
     };
+
+    public int convertStateStringToInt(String state) {
+        for (int i = 0; i < states.length; i++) {
+            if (states[i].equals(state)) {
+                return i; //convert string into int placeholder for chart
+            }
+        }
+        return -1;
+    }
 }

@@ -10,12 +10,11 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GraphTest extends ApplicationFrame {
+public class PlotTest extends ApplicationFrame {
 
-    public GraphTest(final String title) {
+    public PlotTest(final String title) {
         super(title);
         final XYSeries series = new XYSeries("Population");
         series.add(0, 453.2);
@@ -48,7 +47,7 @@ public class GraphTest extends ApplicationFrame {
         data.addSeries(series);
         data.addSeries(urban);
         data.addSeries(random);
-        final JFreeChart chart = ChartFactory.createScatterPlot("XY Series", "State", "Y", data,
+        final JFreeChart chart = ChartFactory.createScatterPlot("XY Series", "State", "Percentage", data,
                 PlotOrientation.VERTICAL, true, true, false);
 
         XYPlot plot = (XYPlot) chart.getPlot();
@@ -62,10 +61,8 @@ public class GraphTest extends ApplicationFrame {
         setContentPane(chartPanel);
     }
 
-//    String[] states = {"CO", "AL", "AK", "DE", "VT", "CT", "AZ", "CA", "SD"};
-
     public static void main(String[] args) {
-        final GraphTest demo = new GraphTest("XY test");
+        PlotTest demo = new PlotTest("XY test");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);
