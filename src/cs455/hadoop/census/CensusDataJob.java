@@ -1,7 +1,5 @@
 package cs455.hadoop.census;
 
-import cs455.hadoop.census.test.PlotTest;
-import cs455.hadoop.census.util.PlotResults;
 import cs455.hadoop.census.util.MapMultiple;
 import cs455.hadoop.census.util.PrintResults;
 import org.apache.hadoop.conf.Configuration;
@@ -13,7 +11,6 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
-import org.jfree.ui.RefineryUtilities;
 
 import java.io.IOException;
 
@@ -78,13 +75,6 @@ public class CensusDataJob {
         printResults.printOutput();
     }
 
-    private void plotResults(String[] args) throws IOException {
-        Path outputPath = new Path(args[1]);
-        PlotResults plotResults = new PlotResults(outputPath, conf, "Urban and rural population's " +
-                "influence on children's population");
-        plotResults.plotOutput();
-    }
-
     //write each question in its own output folder
     private void addCustomDirectories(Job job) {
         MultipleOutputs.addNamedOutput(job, "question1", TextOutputFormat.class, Text.class, Text.class);
@@ -104,6 +94,5 @@ public class CensusDataJob {
         CensusDataJob censusDataJob = new CensusDataJob();
         if (args[2].equals("go")) censusDataJob.executeJob(args);
         if (args[2].equals("print")) censusDataJob.printResults(args);
-        if (args[2].equals("plot")) censusDataJob.plotResults(args);
     }
 }
