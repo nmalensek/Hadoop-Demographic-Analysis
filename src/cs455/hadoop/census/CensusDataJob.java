@@ -4,6 +4,7 @@ import cs455.hadoop.census.unused.CustomWritable;
 import cs455.hadoop.census.unused.TextCombiner;
 import cs455.hadoop.census.unused.TextMapper;
 import cs455.hadoop.census.unused.TextReducer;
+import cs455.hadoop.census.util.GraphResults;
 import cs455.hadoop.census.util.MapMultiple;
 import cs455.hadoop.census.util.PrintResults;
 import org.apache.hadoop.conf.Configuration;
@@ -77,6 +78,11 @@ public class CensusDataJob {
         Path outputPath = new Path(args[1]);
         PrintResults printResults = new PrintResults(outputPath, conf);
         printResults.printOutput();
+    }
+
+    private void graphResults(String[] args) throws IOException {
+        Path outputPath = new Path(args[1]);
+        GraphResults graphResults = new GraphResults();
     }
 
     //write each question in its own output folder

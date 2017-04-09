@@ -25,7 +25,7 @@ public class PrintResults {
             FileStatus[] files = fileSystem.listStatus(outputPath);
             for (FileStatus status : files) {
                 Path path = status.getPath();
-                if (path.getName().contains("question")) {
+                if (path.getName().contains("question") && !path.getName().contains("question9")) {
                     reader = new BufferedReader(new InputStreamReader(fileSystem.open(path)));
                     String line = reader.readLine();
 
