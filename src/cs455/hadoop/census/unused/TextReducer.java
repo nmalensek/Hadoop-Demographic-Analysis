@@ -47,6 +47,7 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
         double hispanicFemales30to39 = 0;
         double ruralHouseholds = 0;
         double urbanHouseholds = 0;
+        double totalHouses = 0;
 
         for (CustomWritable cw : values) {
             totalRent += Double.parseDouble(cw.getQuestionOne().split(":")[0]);
@@ -66,6 +67,8 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
 
             ruralHouseholds += Double.parseDouble(cw.getQuestionFour().split(":")[0]);
             urbanHouseholds += Double.parseDouble(cw.getQuestionFour().split(":")[1]);
+
+            totalHouses += Double.parseDouble(cw.getQuestionFiveTotalHomes());
         }
 
         multipleOutputs.write("question1", key, new Text(

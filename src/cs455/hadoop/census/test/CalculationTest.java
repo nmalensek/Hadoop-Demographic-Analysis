@@ -13,6 +13,7 @@ public class CalculationTest {
     private int males1 = 5;
     private int males2 = 6;
     private int totalMales = 0;
+    Map<String, Integer> testMap = new HashMap<>();
 
     public CalculationTest() {
 
@@ -131,6 +132,18 @@ public class CalculationTest {
 
     }
 
+    private void mapTest(String key, Integer value) {
+
+        if (testMap.containsKey(key)) {
+            int newValue = testMap.get(key) + value;
+            testMap.put(key, newValue);
+        } else {
+            testMap.put(key, value);
+        }
+
+        System.out.println(testMap.get(key));
+    }
+
 
     public static void main(String[] args) {
         CalculationTest calculationTest = new CalculationTest();
@@ -142,7 +155,10 @@ public class CalculationTest {
 //        calculationTest.femaleHispanicIterator();
 //        calculationTest.medianTest();
 //        calculationTest.rentTest();
-        calculationTest.iteratorTest();
+//        calculationTest.iteratorTest();
+        calculationTest.mapTest("test1", 5);
+        calculationTest.mapTest("test2", 6);
+        calculationTest.mapTest("test1", 10);
     }
 
 

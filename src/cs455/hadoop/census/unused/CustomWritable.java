@@ -6,6 +6,8 @@ import org.apache.hadoop.io.WritableUtils;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomWritable implements Writable {
 
@@ -15,7 +17,8 @@ public class CustomWritable implements Writable {
     private String questionTwo = "0:0:0";
     private String questionThree = "0:0:0:0:0:0:0";
     private String questionFour = "0:0";
-    private String questionFive = "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0";
+    private String questionFiveTotalHomes = "0";
+    private Map<String, Integer> questionFiveMap;
     private String questionSix;
     private String questionSeven;
     private String questionEight;
@@ -29,7 +32,7 @@ public class CustomWritable implements Writable {
         questionTwo = WritableUtils.readString(dataInput);
         questionThree = WritableUtils.readString(dataInput);
         questionFour = WritableUtils.readString(dataInput);
-        questionFive = WritableUtils.readString(dataInput);
+        questionFiveTotalHomes = WritableUtils.readString(dataInput);
     }
 
     @Override
@@ -38,7 +41,7 @@ public class CustomWritable implements Writable {
         WritableUtils.writeString(dataOutput, questionTwo);
         WritableUtils.writeString(dataOutput, questionThree);
         WritableUtils.writeString(dataOutput, questionFour);
-        WritableUtils.writeString(dataOutput, questionFive);
+        WritableUtils.writeString(dataOutput, questionFiveTotalHomes);
     }
 
     public String getQuestionOne() {return questionOne;}
@@ -53,6 +56,9 @@ public class CustomWritable implements Writable {
     public String getQuestionFour() {return questionFour;}
     public void setQuestionFour(String questionFour) {this.questionFour = questionFour;}
 
-    public String getQuestionFive() {return questionFive;}
-    public void setQuestionFive(String questionFive) {this.questionFive = questionFive;}
+    public String getQuestionFiveTotalHomes() {return questionFiveTotalHomes;}
+    public void setQuestionFiveTotalHomes(String questionFiveTotalHomes) {this.questionFiveTotalHomes = questionFiveTotalHomes;}
+    public Map<String, Integer> getQuestionFiveMap() {return questionFiveMap;}
+    public void setQuestionFiveMap(Map<String, Integer> questionFiveMap) {this.questionFiveMap = questionFiveMap;}
+
 }

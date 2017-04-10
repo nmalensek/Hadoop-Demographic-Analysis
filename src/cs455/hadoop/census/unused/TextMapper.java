@@ -1,10 +1,13 @@
 package cs455.hadoop.census.unused;
 
+import cs455.hadoop.census.ranges.HouseRanges;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class TextMapper extends Mapper<LongWritable, Text, Text, CustomWritable> {
@@ -138,11 +141,14 @@ public class TextMapper extends Mapper<LongWritable, Text, Text, CustomWritable>
                     houseValueStartPosition += 9;
                 }
 
-                String homeValues = totalHomes + ":";
+                Map<String, Integer> houseValueMap = new HashMap<>();
+                String[] houseValueRanges = HouseRanges.getInstance().getRanges();
+
                 for (int i = 0; i < homeValueArray.length; i++) {
-                    homeValues += homeValueArray[i] + ":";
+                    houseValueMap.put(houseValueRanges[i], homeValueArray[i]);
                 }
-                customWritable.setQuestionFive(homeValues);
+                customWritable.setQuestionFiveTotalHomes(String.valueOf(totalHomes));
+                customWritable.setQuestionFiveMap(houseValueMap);
 //
 //                //question 6: median rent value
 //                int rentAmountStartPosition = 3450;

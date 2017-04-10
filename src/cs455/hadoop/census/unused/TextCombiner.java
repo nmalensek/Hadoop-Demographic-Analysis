@@ -4,6 +4,8 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWritable> {
 
@@ -28,6 +30,9 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
         double ruralHouseholds = 0;
         double urbanHouseholds = 0;
 
+        double totalHouses = 0;
+        Map<String, Integer> houseRangeMap = new HashMap<>();
+
         for (CustomWritable cw : values) {
 
             intermediateStringData = cw.getQuestionOne().split(":");
@@ -51,6 +56,17 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
             intermediateStringData = cw.getQuestionFour().split(":");
             ruralHouseholds += Double.parseDouble(intermediateStringData[0]);
             urbanHouseholds += Double.parseDouble(intermediateStringData[1]);
+
+            totalHouses += Double.parseDouble(cw.getQuestionFiveTotalHomes());
+            for (String valueRange : cw.getQuestionFiveMap().keySet()) {
+                if (houseRangeMap.containsKey(valueRange)) {
+                    int newRangeValue = houseRangeMap.get(valueRange)
+                            + cw.getQuestionFiveMap().get(valueRange);
+                    houseRangeMap.put(valueRange, newRangeValue);
+                } else {
+                    houseRangeMap.put(valueRange, cw.getQuestionFiveMap().get(valueRange));
+                }
+            }
         }
 
         //q1
@@ -62,6 +78,9 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
         ":"+hispanicMales30to39+":"+hispanicFemalesUnder18+":"+hispanicFemales19to29+":"+hispanicFemales30to39);
         //q4
         customWritable.setQuestionFour(ruralHouseholds+":"+urbanHouseholds);
+        //q5
+        customWritable.setQuestionFiveTotalHomes(String.valueOf(totalHouses));
+        customWritable.setQuestionFiveMap(houseRangeMap);
 
         context.write(key, customWritable);
     }
