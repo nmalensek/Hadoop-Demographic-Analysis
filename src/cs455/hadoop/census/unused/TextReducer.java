@@ -45,6 +45,8 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
         double hispanicFemales19to29 = 0;
         double hispanicMales30to39 = 0;
         double hispanicFemales30to39 = 0;
+        double ruralHouseholds = 0;
+        double urbanHouseholds = 0;
 
         for (CustomWritable cw : values) {
             totalRent += Double.parseDouble(cw.getQuestionOne().split(":")[0]);
@@ -61,6 +63,9 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
             hispanicFemalesUnder18 += Double.parseDouble(cw.getQuestionThree().split(":")[4]);
             hispanicFemales19to29 += Double.parseDouble(cw.getQuestionThree().split(":")[5]);
             hispanicFemales30to39 += Double.parseDouble(cw.getQuestionThree().split(":")[6]);
+
+            ruralHouseholds += Double.parseDouble(cw.getQuestionFour().split(":")[0]);
+            urbanHouseholds += Double.parseDouble(cw.getQuestionFour().split(":")[1]);
         }
 
         multipleOutputs.write("question1", key, new Text(
@@ -86,6 +91,11 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
         multipleOutputs.write("question3c", key, new Text(
                 " Males: " + calculatePercentage(hispanicMales30to39, totalHispanicPopulation) +
                         "% | Females: " + calculatePercentage(hispanicFemales30to39, totalHispanicPopulation) +
+                        "%"));
+
+        multipleOutputs.write("question4", key, new Text(
+                " Rural: " + calculatePercentage(ruralHouseholds, (ruralHouseholds + urbanHouseholds)) +
+                        "% | Urban: " + calculatePercentage(urbanHouseholds, (ruralHouseholds + urbanHouseholds)) +
                         "%"));
 
     }

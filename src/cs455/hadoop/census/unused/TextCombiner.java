@@ -25,6 +25,9 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
         double hispanicMales30to39 = 0;
         double hispanicFemales30to39 = 0;
 
+        double ruralHouseholds = 0;
+        double urbanHouseholds = 0;
+
         for (CustomWritable cw : values) {
 
             intermediateStringData = cw.getQuestionOne().split(":");
@@ -44,6 +47,10 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
             hispanicFemalesUnder18 += Double.parseDouble(intermediateStringData[4]);
             hispanicFemales19to29 += Double.parseDouble(intermediateStringData[5]);
             hispanicFemales30to39 += Double.parseDouble(intermediateStringData[6]);
+
+            intermediateStringData = cw.getQuestionFour().split(":");
+            ruralHouseholds += Double.parseDouble(intermediateStringData[0]);
+            urbanHouseholds += Double.parseDouble(intermediateStringData[1]);
         }
 
         //q1
@@ -53,6 +60,8 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
         //q3
         customWritable.setQuestionThree(totalHispanicPopulation +":"+hispanicMalesUnder18+":"+hispanicMales19to29+
         ":"+hispanicMales30to39+":"+hispanicFemalesUnder18+":"+hispanicFemales19to29+":"+hispanicFemales30to39);
+        //q4
+        customWritable.setQuestionFour(ruralHouseholds+":"+urbanHouseholds);
 
         context.write(key, customWritable);
     }

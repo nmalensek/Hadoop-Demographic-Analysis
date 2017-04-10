@@ -119,42 +119,30 @@ public class TextMapper extends Mapper<LongWritable, Text, Text, CustomWritable>
                 String rentVsOwn = rent + ":" + own;
                 customWritable.setQuestionOne(rentVsOwn);
 
-//                //question 4: urban vs rural
-//                int inUrban = Integer.parseInt(line.substring(1821, 1830));
-//                int outUrban = Integer.parseInt(line.substring(1830, 1839));
-//                int rural = Integer.parseInt(line.substring(1839, 1848));
-//                mapMultiple.setInsideUrban(inUrban);
-//                mapMultiple.setOutsideUrban(outUrban);
-//                mapMultiple.setRural(rural);
-//
-//                //question 5: median owner-occupied home value
-//                int houseValueStartPosition = 2928;
-//                int totalHomes = 0;
-//                for (int i = 0; i < 20; i++) {
-//                    totalHomes += Integer.parseInt(line.substring(houseValueStartPosition, houseValueStartPosition + 9));
-//                    houseValueStartPosition += 9;
-//                }
-//                mapMultiple.setTotalOwnedHomes(totalHomes);
-//                mapMultiple.setOwnedHomeValue0(Integer.parseInt(line.substring(2928, 2937)));
-//                mapMultiple.setOwnedHomeValue1(Integer.parseInt(line.substring(2937, 2946)));
-//                mapMultiple.setOwnedHomeValue2(Integer.parseInt(line.substring(2946, 2955)));
-//                mapMultiple.setOwnedHomeValue3(Integer.parseInt(line.substring(2955, 2964)));
-//                mapMultiple.setOwnedHomeValue4(Integer.parseInt(line.substring(2964, 2973)));
-//                mapMultiple.setOwnedHomeValue5(Integer.parseInt(line.substring(2973, 2982)));
-//                mapMultiple.setOwnedHomeValue6(Integer.parseInt(line.substring(2982, 2991)));
-//                mapMultiple.setOwnedHomeValue7(Integer.parseInt(line.substring(2991, 3000)));
-//                mapMultiple.setOwnedHomeValue8(Integer.parseInt(line.substring(3000, 3009)));
-//                mapMultiple.setOwnedHomeValue9(Integer.parseInt(line.substring(3009, 3018)));
-//                mapMultiple.setOwnedHomeValue10(Integer.parseInt(line.substring(3018, 3027)));
-//                mapMultiple.setOwnedHomeValue11(Integer.parseInt(line.substring(3027, 3036)));
-//                mapMultiple.setOwnedHomeValue12(Integer.parseInt(line.substring(3036, 3045)));
-//                mapMultiple.setOwnedHomeValue13(Integer.parseInt(line.substring(3045, 3054)));
-//                mapMultiple.setOwnedHomeValue14(Integer.parseInt(line.substring(3054, 3063)));
-//                mapMultiple.setOwnedHomeValue15(Integer.parseInt(line.substring(3063, 3072)));
-//                mapMultiple.setOwnedHomeValue16(Integer.parseInt(line.substring(3072, 3081)));
-//                mapMultiple.setOwnedHomeValue17(Integer.parseInt(line.substring(3081, 3090)));
-//                mapMultiple.setOwnedHomeValue18(Integer.parseInt(line.substring(3090, 3099)));
-//                mapMultiple.setOwnedHomeValue19(Integer.parseInt(line.substring(3099, 3108)));
+                //question 4: urban vs rural
+                int inUrban = Integer.parseInt(line.substring(1821, 1830));
+                int outUrban = Integer.parseInt(line.substring(1830, 1839));
+                int rural = Integer.parseInt(line.substring(1839, 1848));
+                int totalUrban = inUrban + outUrban;
+
+                String ruralAndUrban = rural + ":" + totalUrban;
+                customWritable.setQuestionFour(ruralAndUrban);
+
+                //question 5: median owner-occupied home value
+                int houseValueStartPosition = 2928;
+                Integer[] homeValueArray = {};
+                int totalHomes = 0;
+                for (int i = 0; i < 20; i++) {
+                    totalHomes += Integer.parseInt(line.substring(houseValueStartPosition, houseValueStartPosition + 9));
+                    homeValueArray[i] = Integer.parseInt(line.substring(houseValueStartPosition, houseValueStartPosition + 9));
+                    houseValueStartPosition += 9;
+                }
+
+                String homeValues = totalHomes + ":";
+                for (int i = 0; i < homeValueArray.length; i++) {
+                    homeValues += homeValueArray[i] + ":";
+                }
+                customWritable.setQuestionFive(homeValues);
 //
 //                //question 6: median rent value
 //                int rentAmountStartPosition = 3450;

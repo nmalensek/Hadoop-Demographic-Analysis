@@ -14,8 +14,8 @@ public class CustomWritable implements Writable {
     private String questionOne = "0:0";
     private String questionTwo = "0:0:0";
     private String questionThree = "0:0:0:0:0:0:0";
-    private String questionFour;
-    private String questionFive;
+    private String questionFour = "0:0";
+    private String questionFive = "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0";
     private String questionSix;
     private String questionSeven;
     private String questionEight;
@@ -28,6 +28,8 @@ public class CustomWritable implements Writable {
         questionOne = WritableUtils.readString(dataInput);
         questionTwo = WritableUtils.readString(dataInput);
         questionThree = WritableUtils.readString(dataInput);
+        questionFour = WritableUtils.readString(dataInput);
+        questionFive = WritableUtils.readString(dataInput);
     }
 
     @Override
@@ -35,6 +37,8 @@ public class CustomWritable implements Writable {
         WritableUtils.writeString(dataOutput, questionOne);
         WritableUtils.writeString(dataOutput, questionTwo);
         WritableUtils.writeString(dataOutput, questionThree);
+        WritableUtils.writeString(dataOutput, questionFour);
+        WritableUtils.writeString(dataOutput, questionFive);
     }
 
     public String getQuestionOne() {return questionOne;}
@@ -45,4 +49,10 @@ public class CustomWritable implements Writable {
 
     public String getQuestionThree() {return questionThree;}
     public void setQuestionThree(String questionThree) {this.questionThree = questionThree;}
+
+    public String getQuestionFour() {return questionFour;}
+    public void setQuestionFour(String questionFour) {this.questionFour = questionFour;}
+
+    public String getQuestionFive() {return questionFive;}
+    public void setQuestionFive(String questionFive) {this.questionFive = questionFive;}
 }
