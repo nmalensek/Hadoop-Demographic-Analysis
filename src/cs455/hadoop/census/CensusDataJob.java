@@ -1,5 +1,9 @@
 package cs455.hadoop.census;
 
+import cs455.hadoop.census.unused.CustomWritable;
+import cs455.hadoop.census.unused.TextCombiner;
+import cs455.hadoop.census.unused.TextMapper;
+import cs455.hadoop.census.unused.TextReducer;
 import cs455.hadoop.census.util.MapMultiple;
 import cs455.hadoop.census.util.PrintResults;
 import org.apache.hadoop.conf.Configuration;
@@ -39,14 +43,14 @@ public class CensusDataJob {
             // Current class.
             job.setJarByClass(CensusDataJob.class);
             // Mapper
-            job.setMapperClass(CensusDataMapper.class);
+            job.setMapperClass(TextMapper.class);
             // Combiner. We use the reducer as the combiner in this case.
-            job.setCombinerClass(CensusDataCombiner.class);
+            job.setCombinerClass(TextCombiner.class);
             // Reducer
-            job.setReducerClass(CensusDataReducer.class);
+            job.setReducerClass(TextReducer.class);
             // Outputs from the Mapper.
             job.setMapOutputKeyClass(Text.class);
-            job.setMapOutputValueClass(MapMultiple.class);
+            job.setMapOutputValueClass(CustomWritable.class);
             // Outputs from Reducer. It is sufficient to set only the following two properties
             // if the Mapper and Reducer has same key and value types. It is set separately for
             // elaboration.

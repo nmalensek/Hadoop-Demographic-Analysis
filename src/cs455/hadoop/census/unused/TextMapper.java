@@ -133,48 +133,42 @@ public class TextMapper extends Mapper<LongWritable, Text, Text, CustomWritable>
 
                 //question 5: median owner-occupied home value
                 int houseValueStartPosition = 2928;
-                Integer[] homeValueArray = {};
                 int totalHomes = 0;
+                String homeValues = "";
                 for (int i = 0; i < 20; i++) {
                     totalHomes += Integer.parseInt(line.substring(houseValueStartPosition, houseValueStartPosition + 9));
-                    homeValueArray[i] = Integer.parseInt(line.substring(houseValueStartPosition, houseValueStartPosition + 9));
+                    homeValues += Double.parseDouble(line.substring(houseValueStartPosition, houseValueStartPosition + 9)) + ":";
                     houseValueStartPosition += 9;
                 }
 
-                Map<String, Integer> houseValueMap = new HashMap<>();
-                String[] houseValueRanges = HouseRanges.getInstance().getRanges();
-
-                for (int i = 0; i < homeValueArray.length; i++) {
-                    houseValueMap.put(houseValueRanges[i], homeValueArray[i]);
-                }
                 customWritable.setQuestionFiveTotalHomes(String.valueOf(totalHomes));
-                customWritable.setQuestionFiveMap(houseValueMap);
-//
-//                //question 6: median rent value
-//                int rentAmountStartPosition = 3450;
-//                int totalRenters = 0;
-//                for (int i = 0; i < 17; i++) {
-//                    totalRenters += Integer.parseInt(line.substring(rentAmountStartPosition, rentAmountStartPosition + 9));
-//                    rentAmountStartPosition += 9;
-//                }
-//                mapMultiple.setTotalRenters(totalRenters);
-//                mapMultiple.setRentValue0(Integer.parseInt(line.substring(3450, 3459)));
-//                mapMultiple.setRentValue1(Integer.parseInt(line.substring(3459, 3468)));
-//                mapMultiple.setRentValue2(Integer.parseInt(line.substring(3468, 3477)));
-//                mapMultiple.setRentValue3(Integer.parseInt(line.substring(3477, 3486)));
-//                mapMultiple.setRentValue4(Integer.parseInt(line.substring(3486, 3495)));
-//                mapMultiple.setRentValue5(Integer.parseInt(line.substring(3495, 3504)));
-//                mapMultiple.setRentValue6(Integer.parseInt(line.substring(3504, 3513)));
-//                mapMultiple.setRentValue7(Integer.parseInt(line.substring(3513, 3522)));
-//                mapMultiple.setRentValue8(Integer.parseInt(line.substring(3522, 3531)));
-//                mapMultiple.setRentValue9(Integer.parseInt(line.substring(3531, 3540)));
-//                mapMultiple.setRentValue10(Integer.parseInt(line.substring(3540, 3549)));
-//                mapMultiple.setRentValue11(Integer.parseInt(line.substring(3549, 3558)));
-//                mapMultiple.setRentValue12(Integer.parseInt(line.substring(3558, 3567)));
-//                mapMultiple.setRentValue13(Integer.parseInt(line.substring(3567, 3576)));
-//                mapMultiple.setRentValue14(Integer.parseInt(line.substring(3576, 3585)));
-//                mapMultiple.setRentValue15(Integer.parseInt(line.substring(3585, 3594)));
-//                mapMultiple.setRentValue16(Integer.parseInt(line.substring(3594, 3603)));
+                customWritable.setQuestionFiveHomeValues(homeValues);
+
+                //question 6: median rent value
+                int rentAmountStartPosition = 3450;
+                int totalRenters = 0;
+                for (int i = 0; i < 17; i++) {
+                    totalRenters += Integer.parseInt(line.substring(rentAmountStartPosition, rentAmountStartPosition + 9));
+                    rentAmountStartPosition += 9;
+                }
+                mapMultiple.setTotalRenters(totalRenters);
+                mapMultiple.setRentValue0(Integer.parseInt(line.substring(3450, 3459)));
+                mapMultiple.setRentValue1(Integer.parseInt(line.substring(3459, 3468)));
+                mapMultiple.setRentValue2(Integer.parseInt(line.substring(3468, 3477)));
+                mapMultiple.setRentValue3(Integer.parseInt(line.substring(3477, 3486)));
+                mapMultiple.setRentValue4(Integer.parseInt(line.substring(3486, 3495)));
+                mapMultiple.setRentValue5(Integer.parseInt(line.substring(3495, 3504)));
+                mapMultiple.setRentValue6(Integer.parseInt(line.substring(3504, 3513)));
+                mapMultiple.setRentValue7(Integer.parseInt(line.substring(3513, 3522)));
+                mapMultiple.setRentValue8(Integer.parseInt(line.substring(3522, 3531)));
+                mapMultiple.setRentValue9(Integer.parseInt(line.substring(3531, 3540)));
+                mapMultiple.setRentValue10(Integer.parseInt(line.substring(3540, 3549)));
+                mapMultiple.setRentValue11(Integer.parseInt(line.substring(3549, 3558)));
+                mapMultiple.setRentValue12(Integer.parseInt(line.substring(3558, 3567)));
+                mapMultiple.setRentValue13(Integer.parseInt(line.substring(3567, 3576)));
+                mapMultiple.setRentValue14(Integer.parseInt(line.substring(3576, 3585)));
+                mapMultiple.setRentValue15(Integer.parseInt(line.substring(3585, 3594)));
+                mapMultiple.setRentValue16(Integer.parseInt(line.substring(3594, 3603)));
             }
 
             context.write(new Text(state), customWritable);

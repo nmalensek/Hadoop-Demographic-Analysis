@@ -18,7 +18,7 @@ public class CustomWritable implements Writable {
     private String questionThree = "0:0:0:0:0:0:0";
     private String questionFour = "0:0";
     private String questionFiveTotalHomes = "0";
-    private Map<String, Integer> questionFiveMap;
+    private String questionFiveHomeValues = "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0";
     private String questionSix;
     private String questionSeven;
     private String questionEight;
@@ -33,6 +33,7 @@ public class CustomWritable implements Writable {
         questionThree = WritableUtils.readString(dataInput);
         questionFour = WritableUtils.readString(dataInput);
         questionFiveTotalHomes = WritableUtils.readString(dataInput);
+        questionFiveHomeValues = WritableUtils.readString(dataInput);
     }
 
     @Override
@@ -42,6 +43,7 @@ public class CustomWritable implements Writable {
         WritableUtils.writeString(dataOutput, questionThree);
         WritableUtils.writeString(dataOutput, questionFour);
         WritableUtils.writeString(dataOutput, questionFiveTotalHomes);
+        WritableUtils.writeString(dataOutput, questionFiveHomeValues);
     }
 
     public String getQuestionOne() {return questionOne;}
@@ -58,7 +60,7 @@ public class CustomWritable implements Writable {
 
     public String getQuestionFiveTotalHomes() {return questionFiveTotalHomes;}
     public void setQuestionFiveTotalHomes(String questionFiveTotalHomes) {this.questionFiveTotalHomes = questionFiveTotalHomes;}
-    public Map<String, Integer> getQuestionFiveMap() {return questionFiveMap;}
-    public void setQuestionFiveMap(Map<String, Integer> questionFiveMap) {this.questionFiveMap = questionFiveMap;}
 
+    public String getQuestionFiveHomeValues() {return questionFiveHomeValues;}
+    public void setQuestionFiveHomeValues(String questionFiveHomeValues) {this.questionFiveHomeValues = questionFiveHomeValues;}
 }

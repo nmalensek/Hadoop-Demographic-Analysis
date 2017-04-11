@@ -1,7 +1,6 @@
 package cs455.hadoop.census.unused;
 
 import cs455.hadoop.census.ranges.HouseRanges;
-import cs455.hadoop.census.ranges.RentRanges;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
@@ -11,7 +10,6 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
-
     private MultipleOutputs multipleOutputs;
 
     public void setup(Context context) throws IOException, InterruptedException {
@@ -28,11 +26,9 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
 
     @Override
     protected void reduce(Text key, Iterable<CustomWritable> values, Context context) throws IOException, InterruptedException {
-        CustomWritable customWritable = new CustomWritable();
-        Map<String, Double> houseRangeMap = new HashMap<>();
         Map<String, Double> rentRangeMap = new HashMap<>();
+        Map<Integer, Double> houseRangeMap = new TreeMap<>();
         HouseRanges houseRanges = HouseRanges.getInstance();
-        RentRanges rentRanges = RentRanges.getInstance();
         double totalRent = 0;
         double totalOwn = 0;
         double totalPopulation = 0;
@@ -48,6 +44,8 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
         double ruralHouseholds = 0;
         double urbanHouseholds = 0;
         double totalHouses = 0;
+
+        Double[] homeDoubles = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 
         for (CustomWritable cw : values) {
             totalRent += Double.parseDouble(cw.getQuestionOne().split(":")[0]);
@@ -69,6 +67,14 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
             urbanHouseholds += Double.parseDouble(cw.getQuestionFour().split(":")[1]);
 
             totalHouses += Double.parseDouble(cw.getQuestionFiveTotalHomes());
+            String[] intermediateStringData = cw.getQuestionFiveHomeValues().split(":");
+            for (int i = 0; i < intermediateStringData.length-1; i++) {
+                homeDoubles[i] += Double.parseDouble(intermediateStringData[i]);
+            }
+        }
+
+        for (int i = 0; i < 20; i++) {
+            houseRangeMap.put(houseRanges.getHousingIntegers()[i], homeDoubles[i]);
         }
 
         multipleOutputs.write("question1", key, new Text(
@@ -101,6 +107,9 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
                         "% | Urban: " + calculatePercentage(urbanHouseholds, (ruralHouseholds + urbanHouseholds)) +
                         "%"));
 
+        multipleOutputs.write("question5", key, new Text(
+                " " + calculateMedian(houseRangeMap, HouseRanges.getInstance().getRanges(), totalHouses)));
+
     }
 
     //must close multiple outputs, otherwise the results might not be written to output files
@@ -120,46 +129,35 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
         }
     }
 
-//    private String calculatePercentile(Map<String, Double> map, double totalNumber, double percentile) {
-//        List<Double> sortedList = new ArrayList<>();
-//        double TOTAL = 0;
-//        int currentCount = 0;
-//        int iterations = 0;
-//
-//        for (String key : map.keySet()) {
-//            sortedList.add(map.get(key));
-//            TOTAL += map.get(key);
-//        }
-//        Collections.sort(sortedList);
-//        double dividingPoint = TOTAL * percentile;
-//
-//        while (currentCount < dividingPoint) {
-//            currentCount += sortedList.get(iterations);
-//            iterations++;
-//        }
-//
-//        String relevantRange = "N/A";
-//
-//        if (iterations != 0) {
-//            for (String key : map.keySet()) {
-//                if (sortedList.get(iterations - 1) == map.get(key)) {
-//                    relevantRange = key;
-//                    break;
-//                }
-//            }
-//        }
-//
-//        //debug
+    private String calculateMedian(Map<Integer, Double> map, String[] dataArray, double totalNumber) {
+        int currentCount = 0;
+        int iterations = 0;
+
+        double dividingPoint = totalNumber * 0.50;
+
+        for (Integer key : map.keySet()) {
+            currentCount += map.get(key);
+            iterations++;
+            if (currentCount > dividingPoint) {
+                break;
+            }
+        }
+
+        String relevantRange = "N/A";
+
+        if (iterations != 0) {
+            relevantRange = dataArray[iterations - 1];
+        }
+
+        //debug
 //        String test = "";
-//        test += iterations + ":" + dividingPoint + ":" + totalNumber + ":" + TOTAL + "\n" + sortedList.toString() + "\n";
-//        for (String key : map.keySet()) {
+//        test += iterations + ":" + dividingPoint + ":" + totalNumber + "\n" + map.values().toString() + "\n";
+//        for (Integer key : map.keySet()) {
 //            test += "[";
 //            test += key.toString() + ", ";
 //            test += map.get(key) + "]\n";
 //        }
 //        test += "***" + relevantRange + "***";
-//        return test;
-//
-//
-//    }
+        return relevantRange;
+    }
 }

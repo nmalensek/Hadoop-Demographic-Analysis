@@ -31,7 +31,8 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
         double urbanHouseholds = 0;
 
         double totalHouses = 0;
-        Map<String, Integer> houseRangeMap = new HashMap<>();
+        String homeValues = "";
+        Double[] homeDoubles = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 
         for (CustomWritable cw : values) {
 
@@ -58,15 +59,11 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
             urbanHouseholds += Double.parseDouble(intermediateStringData[1]);
 
             totalHouses += Double.parseDouble(cw.getQuestionFiveTotalHomes());
-            for (String valueRange : cw.getQuestionFiveMap().keySet()) {
-                if (houseRangeMap.containsKey(valueRange)) {
-                    int newRangeValue = houseRangeMap.get(valueRange)
-                            + cw.getQuestionFiveMap().get(valueRange);
-                    houseRangeMap.put(valueRange, newRangeValue);
-                } else {
-                    houseRangeMap.put(valueRange, cw.getQuestionFiveMap().get(valueRange));
-                }
+            intermediateStringData = cw.getQuestionFiveHomeValues().split(":");
+            for (int i = 0; i < intermediateStringData.length-1; i++) {
+                homeDoubles[i] += Double.parseDouble(intermediateStringData[i]);
             }
+
         }
 
         //q1
@@ -80,7 +77,10 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
         customWritable.setQuestionFour(ruralHouseholds+":"+urbanHouseholds);
         //q5
         customWritable.setQuestionFiveTotalHomes(String.valueOf(totalHouses));
-        customWritable.setQuestionFiveMap(houseRangeMap);
+        for (int i = 0; i < homeDoubles.length; i++) {
+            homeValues += String.valueOf(homeDoubles[i] + ":");
+        }
+        customWritable.setQuestionFiveHomeValues(homeValues);
 
         context.write(key, customWritable);
     }
