@@ -1,11 +1,9 @@
-package cs455.hadoop.census.unused;
+package cs455.hadoop.census.text;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWritable> {
 
@@ -40,7 +38,16 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
 
         double dwellingsWithRooms = 0;
         String roomValues = "";
-        Double[] averageRooms = new Double[9];
+        Double[] numberRooms = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+
+        double urbanPopulation = 0;
+        double ruralPopulation = 0;
+        double childrenUnder1To11 = 0;
+        double children12To17 = 0;
+        double hispanicChildrenUnder1To11 = 0;
+        double hispanicChildren12To17 = 0;
+
+        double elderlyPopulation = 0;
 
         for (CustomWritable cw : values) {
 
@@ -72,18 +79,28 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
                 homeDoubles[i] += Double.parseDouble(intermediateStringData[i]);
             }
 
-            totalRentals += Double.parseDouble(cw.getQuestionSixTotalRenters());
+            totalRenters += Double.parseDouble(cw.getQuestionSixTotalRenters());
             intermediateStringData = cw.getQuestionSixRenterValues().split(":");
-            for (int i = 0; i < intermediateStringData.length-1; i++) {
+            for (int i = 0; i < intermediateStringData.length; i++) {
                 rentDoubles[i] += Double.parseDouble(intermediateStringData[i]);
             }
 
             dwellingsWithRooms += Double.parseDouble(cw.getQuestionSevenDwellingsWithRooms());
             intermediateStringData = cw.getQuestionSevenRoomsPerHouse().split(":");
-            for (int i = 0; i < intermediateStringData.length-1; i++) {
-                averageRooms[i] = Double.parseDouble(intermediateStringData[i]) * i+1;
+            for (int i = 0; i < intermediateStringData.length; i++) {
+                numberRooms[i] += Double.parseDouble(intermediateStringData[i]);
             }
 
+            intermediateStringData = cw.getQuestionEight().split(":");
+            elderlyPopulation += Double.parseDouble(intermediateStringData[0]);
+
+            intermediateStringData = cw.getQuestionNine().split(":");
+            urbanPopulation += Double.parseDouble(intermediateStringData[0]);
+            ruralPopulation += Double.parseDouble(intermediateStringData[1]);
+            childrenUnder1To11 += Double.parseDouble(intermediateStringData[2]);
+            children12To17 += Double.parseDouble(intermediateStringData[3]);
+            hispanicChildrenUnder1To11 += Double.parseDouble(intermediateStringData[4]);
+            hispanicChildren12To17 += Double.parseDouble(intermediateStringData[5]);
         }
 
         //q1
@@ -107,6 +124,17 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
             rentValues += String.valueOf(rentDoubles[i] + ":");
         }
         customWritable.setQuestionSixRenterValues(rentValues);
+        //q7
+        customWritable.setQuestionSevenDwellingsWithRooms(String.valueOf(dwellingsWithRooms));
+        for (int i = 0; i < numberRooms.length; i ++) {
+            roomValues += String.valueOf(numberRooms[i] + ":");
+        }
+        customWritable.setQuestionSevenRoomsPerHouse(roomValues);
+        //q8
+        customWritable.setQuestionEight(elderlyPopulation + ":" + totalPopulation);
+        //q9
+        customWritable.setQuestionNine(urbanPopulation + ":" + ruralPopulation + ":" + childrenUnder1To11 + ":" +
+        children12To17 + ":" + hispanicChildrenUnder1To11 + ":" + hispanicChildren12To17);
 
         context.write(key, customWritable);
     }

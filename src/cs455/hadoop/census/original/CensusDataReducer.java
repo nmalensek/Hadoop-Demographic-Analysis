@@ -1,4 +1,4 @@
-package cs455.hadoop.census;
+package cs455.hadoop.census.original;
 
 import cs455.hadoop.census.ranges.HouseRanges;
 import cs455.hadoop.census.ranges.RentRanges;
@@ -215,6 +215,18 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             hispanicChildren12To17 += val.getHispanicChildren12To17();
         }
 
+        Double[] roomArray = {oneRoom * 1, twoRooms * 2, threeRooms * 3, fourRooms * 4, fiveRooms * 5,
+                sixRooms * 6, sevenRooms * 7, eightRooms * 8, nineRooms * 9};
+
+        DecimalFormat dF = new DecimalFormat("##.00");
+        double average = calculateAverageRooms(roomArray, totalRooms);
+        if (!Double.isNaN(average)) {
+            double formattedAverage = Double.parseDouble(dF.format(average));
+            averageRooms = formattedAverage;
+        } else {
+            averageRooms = 0;
+        }
+
         if (averageRooms != 0) {
             averageList.add(averageRooms);
         }
@@ -234,18 +246,6 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
         for (int i = 0; i < 17; i++) {
             rentRangeMap.put(rentRanges.getIntegerRents()[i], rentPaidArray[i]);
-        }
-
-        Double[] roomArray = {oneRoom * 1, twoRooms * 2, threeRooms * 3, fourRooms * 4, fiveRooms * 5,
-                sixRooms * 6, sevenRooms * 7, eightRooms * 8, nineRooms * 9};
-
-        DecimalFormat dF = new DecimalFormat("##.00");
-        double average = calculateAverageRooms(roomArray, totalRooms);
-        if (!Double.isNaN(average)) {
-            double formattedAverage = Double.parseDouble(dF.format(average));
-            mapMultiple.setAverageRooms(formattedAverage);
-        } else {
-            mapMultiple.setAverageRooms(0);
         }
 
         multipleOutputs.write("question1", key, new Text(
@@ -300,7 +300,8 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
         //question 7 and 8 written here so only one value's output
-        multipleOutputs.write("question7", "", new Text(calculateNinetyFifthPercentile(averageList) + " rooms"));
+        multipleOutputs.write("question7", "", new Text(calculateNinetyFifthPercentile(averageList) +
+                averageList + " rooms"));
         multipleOutputs.write("question8", mostElderlyState, new Text(
                 " " + currentMax + "%"));
         super.cleanup(context);

@@ -1,10 +1,9 @@
 package cs455.hadoop.census;
 
-import cs455.hadoop.census.unused.CustomWritable;
-import cs455.hadoop.census.unused.TextCombiner;
-import cs455.hadoop.census.unused.TextMapper;
-import cs455.hadoop.census.unused.TextReducer;
-import cs455.hadoop.census.util.MapMultiple;
+import cs455.hadoop.census.text.CustomWritable;
+import cs455.hadoop.census.text.TextCombiner;
+import cs455.hadoop.census.text.TextMapper;
+import cs455.hadoop.census.text.TextReducer;
 import cs455.hadoop.census.util.PrintResults;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;

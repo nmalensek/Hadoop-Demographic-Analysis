@@ -1,4 +1,4 @@
-package cs455.hadoop.census.unused;
+package cs455.hadoop.census.text;
 
 import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.io.WritableUtils;
@@ -22,8 +22,8 @@ public class CustomWritable implements Writable {
     private String questionSevenDwellingsWithRooms = "0";
     private String questionSevenRoomsPerHouse = "0:0:0:0:0:0:0:0:0";
     private String questionSevenAverageRooms = "0";
-    private String questionEight;
-    private String questionNine;
+    private String questionEight = "0:0";
+    private String questionNine = "0:0:0:0:0:0";
 
     public CustomWritable() {}
 
@@ -40,6 +40,8 @@ public class CustomWritable implements Writable {
         questionSevenDwellingsWithRooms = WritableUtils.readString(dataInput);
         questionSevenRoomsPerHouse = WritableUtils.readString(dataInput);
         questionSevenAverageRooms = WritableUtils.readString(dataInput);
+        questionEight = WritableUtils.readString(dataInput);
+        questionNine = WritableUtils.readString(dataInput);
     }
 
     @Override
@@ -55,6 +57,8 @@ public class CustomWritable implements Writable {
         WritableUtils.writeString(dataOutput, questionSevenDwellingsWithRooms);
         WritableUtils.writeString(dataOutput, questionSevenRoomsPerHouse);
         WritableUtils.writeString(dataOutput, questionSevenAverageRooms);
+        WritableUtils.writeString(dataOutput, questionEight);
+        WritableUtils.writeString(dataOutput, questionNine);
     }
 
     public String getQuestionOne() {return questionOne;}
@@ -71,7 +75,6 @@ public class CustomWritable implements Writable {
 
     public String getQuestionFiveTotalHomes() {return questionFiveTotalHomes;}
     public void setQuestionFiveTotalHomes(String questionFiveTotalHomes) {this.questionFiveTotalHomes = questionFiveTotalHomes;}
-
     public String getQuestionFiveHomeValues() {return questionFiveHomeValues;}
     public void setQuestionFiveHomeValues(String questionFiveHomeValues) {this.questionFiveHomeValues = questionFiveHomeValues;}
 
@@ -86,4 +89,10 @@ public class CustomWritable implements Writable {
     public void setQuestionSevenRoomsPerHouse(String questionSevenRoomsPerHouse) {this.questionSevenRoomsPerHouse = questionSevenRoomsPerHouse;}
     public String getQuestionSevenAverageRooms() {return questionSevenAverageRooms;}
     public void setQuestionSevenAverageRooms(String questionSevenAverageRooms) {this.questionSevenAverageRooms = questionSevenAverageRooms;}
+
+    public String getQuestionEight() {return questionEight;}
+    public void setQuestionEight(String questionEight) {this.questionEight = questionEight;}
+
+    public String getQuestionNine() {return questionNine;}
+    public void setQuestionNine(String questionNine) {this.questionNine = questionNine;}
 }

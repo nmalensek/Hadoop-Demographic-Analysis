@@ -1,4 +1,4 @@
-package cs455.hadoop.census;
+package cs455.hadoop.census.original;
 
 import cs455.hadoop.census.util.MapMultiple;
 import org.apache.hadoop.io.Text;
