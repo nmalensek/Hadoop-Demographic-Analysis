@@ -243,17 +243,17 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         mapMultiple.setEightRooms(eightRooms);
         mapMultiple.setNineRooms(nineRooms);
 
-        Double[] roomArray = {oneRoom * 1, twoRooms * 2, threeRooms * 3, fourRooms * 4, fiveRooms * 5,
-                sixRooms * 6, sevenRooms * 7, eightRooms * 8, nineRooms * 9};
-
-        DecimalFormat dF = new DecimalFormat("##.00");
-        double average = calculateAverageRooms(roomArray, totalRooms);
-        if (!Double.isNaN(average)) {
-            double formattedAverage = Double.parseDouble(dF.format(average));
-            mapMultiple.setAverageRooms(formattedAverage);
-        } else {
-            mapMultiple.setAverageRooms(0);
-        }
+//        Double[] roomArray = {oneRoom * 1, twoRooms * 2, threeRooms * 3, fourRooms * 4, fiveRooms * 5,
+//                sixRooms * 6, sevenRooms * 7, eightRooms * 8, nineRooms * 9};
+//
+//        DecimalFormat dF = new DecimalFormat("##.00");
+//        double average = calculateAverageRooms(roomArray, totalRooms);
+//        if (!Double.isNaN(average)) {
+//            double formattedAverage = Double.parseDouble(dF.format(average));
+//            mapMultiple.setAverageRooms(formattedAverage);
+//        } else {
+//            mapMultiple.setAverageRooms(0);
+//        }
 
         //q8
         mapMultiple.setElderlyPopulation(elderlyPopulation);
@@ -268,11 +268,11 @@ public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMult
         context.write(key, mapMultiple);
     }
 
-    private double calculateAverageRooms(Double[] rooms, double totalHouses) {
-        double actualRoomQuantity = 0;
-        for (int i = 0; i < 9; i++) {
-            actualRoomQuantity += rooms[i];
-        }
-        return  actualRoomQuantity / totalHouses;
-    }
+//    private double calculateAverageRooms(Double[] rooms, double totalHouses) {
+//        double actualRoomQuantity = 0;
+//        for (int i = 0; i < 9; i++) {
+//            actualRoomQuantity += rooms[i];
+//        }
+//        return  actualRoomQuantity / totalHouses;
+//    }
 }

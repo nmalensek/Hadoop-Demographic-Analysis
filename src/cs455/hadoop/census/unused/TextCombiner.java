@@ -38,6 +38,10 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
         String rentValues = "";
         Double[] rentDoubles = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 
+        double dwellingsWithRooms = 0;
+        String roomValues = "";
+        Double[] averageRooms = new Double[9];
+
         for (CustomWritable cw : values) {
 
             intermediateStringData = cw.getQuestionOne().split(":");
@@ -72,6 +76,12 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
             intermediateStringData = cw.getQuestionSixRenterValues().split(":");
             for (int i = 0; i < intermediateStringData.length-1; i++) {
                 rentDoubles[i] += Double.parseDouble(intermediateStringData[i]);
+            }
+
+            dwellingsWithRooms += Double.parseDouble(cw.getQuestionSevenDwellingsWithRooms());
+            intermediateStringData = cw.getQuestionSevenRoomsPerHouse().split(":");
+            for (int i = 0; i < intermediateStringData.length-1; i++) {
+                averageRooms[i] = Double.parseDouble(intermediateStringData[i]) * i+1;
             }
 
         }

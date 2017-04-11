@@ -6,8 +6,6 @@ import org.apache.hadoop.io.WritableUtils;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CustomWritable implements Writable {
 
@@ -21,7 +19,9 @@ public class CustomWritable implements Writable {
     private String questionFiveHomeValues = "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0";
     private String questionSixTotalRenters = "0";
     private String questionSixRenterValues = "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0";
-    private String questionSeven;
+    private String questionSevenDwellingsWithRooms = "0";
+    private String questionSevenRoomsPerHouse = "0:0:0:0:0:0:0:0:0";
+    private String questionSevenAverageRooms = "0";
     private String questionEight;
     private String questionNine;
 
@@ -37,6 +37,9 @@ public class CustomWritable implements Writable {
         questionFiveHomeValues = WritableUtils.readString(dataInput);
         questionSixTotalRenters = WritableUtils.readString(dataInput);
         questionSixRenterValues = WritableUtils.readString(dataInput);
+        questionSevenDwellingsWithRooms = WritableUtils.readString(dataInput);
+        questionSevenRoomsPerHouse = WritableUtils.readString(dataInput);
+        questionSevenAverageRooms = WritableUtils.readString(dataInput);
     }
 
     @Override
@@ -49,6 +52,9 @@ public class CustomWritable implements Writable {
         WritableUtils.writeString(dataOutput, questionFiveHomeValues);
         WritableUtils.writeString(dataOutput, questionSixTotalRenters);
         WritableUtils.writeString(dataOutput, questionSixRenterValues);
+        WritableUtils.writeString(dataOutput, questionSevenDwellingsWithRooms);
+        WritableUtils.writeString(dataOutput, questionSevenRoomsPerHouse);
+        WritableUtils.writeString(dataOutput, questionSevenAverageRooms);
     }
 
     public String getQuestionOne() {return questionOne;}
@@ -73,4 +79,11 @@ public class CustomWritable implements Writable {
     public void setQuestionSixTotalRenters(String questionSixTotalRenters) {this.questionSixTotalRenters = questionSixTotalRenters;}
     public String getQuestionSixRenterValues() {return questionSixRenterValues;}
     public void setQuestionSixRenterValues(String questionSixRenterValues) {this.questionSixRenterValues = questionSixRenterValues;}
+
+    public String getQuestionSevenDwellingsWithRooms() {return questionSevenDwellingsWithRooms;}
+    public void setQuestionSevenDwellingsWithRooms(String questionSevenDwellingsWithRooms) {this.questionSevenDwellingsWithRooms = questionSevenDwellingsWithRooms;}
+    public String getQuestionSevenRoomsPerHouse() {return questionSevenRoomsPerHouse;}
+    public void setQuestionSevenRoomsPerHouse(String questionSevenRoomsPerHouse) {this.questionSevenRoomsPerHouse = questionSevenRoomsPerHouse;}
+    public String getQuestionSevenAverageRooms() {return questionSevenAverageRooms;}
+    public void setQuestionSevenAverageRooms(String questionSevenAverageRooms) {this.questionSevenAverageRooms = questionSevenAverageRooms;}
 }

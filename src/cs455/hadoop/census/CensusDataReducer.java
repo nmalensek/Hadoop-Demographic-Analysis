@@ -110,7 +110,18 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         double rentValue15 = 0;
         double rentValue16 = 0;
 
+        double totalRooms = 0;
+        double oneRoom = 0;
+        double twoRooms = 0;
+        double threeRooms = 0;
+        double fourRooms = 0;
+        double fiveRooms = 0;
+        double sixRooms = 0;
+        double sevenRooms = 0;
+        double eightRooms = 0;
+        double nineRooms = 0;
         double averageRooms = 0;
+
         double elderlyPopulation = 0;
 
         double urbanPopulation = 0;
@@ -182,7 +193,16 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             rentValue15 += val.getRentValue15();
             rentValue16 += val.getRentValue16();
 
-            averageRooms = val.getAverageRooms();
+            totalRooms += val.getTotalRooms();
+            oneRoom += val.getOneRoom();
+            twoRooms += val.getTwoRooms();
+            threeRooms += val.getThreeRooms();
+            fourRooms += val.getFourRooms();
+            fiveRooms += val.getFiveRooms();
+            sixRooms += val.getSixRooms();
+            sevenRooms += val.getSevenRooms();
+            eightRooms += val.getEightRooms();
+            nineRooms += val.getNineRooms();
 
             elderlyPopulation += val.getElderlyPopulation();
             elderlyMap.put(key, Double.parseDouble(calculatePercentage(elderlyPopulation, population)));
@@ -214,6 +234,18 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 
         for (int i = 0; i < 17; i++) {
             rentRangeMap.put(rentRanges.getIntegerRents()[i], rentPaidArray[i]);
+        }
+
+        Double[] roomArray = {oneRoom * 1, twoRooms * 2, threeRooms * 3, fourRooms * 4, fiveRooms * 5,
+                sixRooms * 6, sevenRooms * 7, eightRooms * 8, nineRooms * 9};
+
+        DecimalFormat dF = new DecimalFormat("##.00");
+        double average = calculateAverageRooms(roomArray, totalRooms);
+        if (!Double.isNaN(average)) {
+            double formattedAverage = Double.parseDouble(dF.format(average));
+            mapMultiple.setAverageRooms(formattedAverage);
+        } else {
+            mapMultiple.setAverageRooms(0);
         }
 
         multipleOutputs.write("question1", key, new Text(
@@ -315,6 +347,14 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
 //        }
 //        test += "***" + relevantRange + "***";
         return relevantRange;
+    }
+
+    private double calculateAverageRooms(Double[] rooms, double totalHouses) {
+        double actualRoomQuantity = 0;
+        for (int i = 0; i < 9; i++) {
+            actualRoomQuantity += rooms[i];
+        }
+        return  actualRoomQuantity / totalHouses;
     }
 
     private void stateWithMostElderlyPeople(Map<Text, Double> stateElderlyMap) {

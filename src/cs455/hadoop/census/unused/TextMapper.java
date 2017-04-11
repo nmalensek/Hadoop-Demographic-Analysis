@@ -157,6 +157,20 @@ public class TextMapper extends Mapper<LongWritable, Text, Text, CustomWritable>
                 customWritable.setQuestionSixTotalRenters(String.valueOf(totalRenters));
                 customWritable.setQuestionSixRenterValues(rentValues);
 
+                //question 7: 95th percentile of average rooms per house
+                int roomStartPosition = 2388;
+                int dwellingsWithRooms = 0;
+                String roomValues = "";
+                for (int i = 0; i < 9; i++) {
+                    dwellingsWithRooms += Integer.parseInt(line.substring(roomStartPosition, roomStartPosition + 9));
+                    roomValues += Integer.parseInt(line.substring(roomStartPosition, roomStartPosition + 9)) + ":";
+                    roomStartPosition += 9;
+                }
+
+                customWritable.setQuestionSevenDwellingsWithRooms(String.valueOf(dwellingsWithRooms));
+                customWritable.setQuestionSevenRoomsPerHouse(roomValues);
+
+
             }
 
             context.write(new Text(state), customWritable);
