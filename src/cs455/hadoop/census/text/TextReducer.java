@@ -218,7 +218,7 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
     private String calculatePercentage(double numerator, double denominator) {
         DecimalFormat decimalFormat = new DecimalFormat("##.00");
         double percentage = (numerator / denominator) * 100;
-        if (Double.isInfinite(percentage)) {
+        if (Double.isInfinite(percentage) || percentage > 100 || percentage < 0) {
             return "N/A";
         } else {
             return decimalFormat.format(percentage);

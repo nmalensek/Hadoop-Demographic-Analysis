@@ -47,7 +47,7 @@ public class QuestionNinePlot {
             while (line != null) {
                 String[] split = line.split(":");
                 if (split.length == 7) {
-                    for (int i = 0; i <split.length; i++) {
+                    for (int i = 0; i < split.length; i++) {
                         if (split[i].equals("N/A")) {
                             split[i] = "0.0";
                         }
@@ -85,12 +85,16 @@ public class QuestionNinePlot {
         String[] splitLine = line.split(":");
         //ignore lines without relevant data
         if (splitLine.length == 7) {
-            for (int i = 0; i < splitLine.length; i++) {
-                ruralPopulation.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[2]));
-                childrenUnder12.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[3]));
-                children12To17.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[4]));
-                hispanicChildrenUnder12.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[5]));
-                hispanicChildren12To17.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[6]));
+            try {
+                for (int i = 0; i < splitLine.length; i++) {
+                    ruralPopulation.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[2]));
+                    childrenUnder12.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[3]));
+                    children12To17.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[4]));
+                    hispanicChildrenUnder12.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[5]));
+                    hispanicChildren12To17.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[6]));
+                }
+            } catch (NumberFormatException nfe) {
+                //continue
             }
         }
     }
