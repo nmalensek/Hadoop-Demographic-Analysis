@@ -34,6 +34,10 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
         String homeValues = "";
         Double[] homeDoubles = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 
+        double totalRenters = 0;
+        String rentValues = "";
+        Double[] rentDoubles = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+
         for (CustomWritable cw : values) {
 
             intermediateStringData = cw.getQuestionOne().split(":");
@@ -64,6 +68,12 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
                 homeDoubles[i] += Double.parseDouble(intermediateStringData[i]);
             }
 
+            totalRentals += Double.parseDouble(cw.getQuestionSixTotalRenters());
+            intermediateStringData = cw.getQuestionSixRenterValues().split(":");
+            for (int i = 0; i < intermediateStringData.length-1; i++) {
+                rentDoubles[i] += Double.parseDouble(intermediateStringData[i]);
+            }
+
         }
 
         //q1
@@ -81,6 +91,12 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
             homeValues += String.valueOf(homeDoubles[i] + ":");
         }
         customWritable.setQuestionFiveHomeValues(homeValues);
+        //q6
+        customWritable.setQuestionSixTotalRenters(String.valueOf(totalRenters));
+        for (int i = 0; i < rentDoubles.length; i++) {
+            rentValues += String.valueOf(rentDoubles[i] + ":");
+        }
+        customWritable.setQuestionSixRenterValues(rentValues);
 
         context.write(key, customWritable);
     }

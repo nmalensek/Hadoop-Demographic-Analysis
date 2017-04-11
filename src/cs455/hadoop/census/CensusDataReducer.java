@@ -285,14 +285,6 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         }
     }
 
-    private String printMap(Map<Text, Double> map) {
-        String keys = "";
-        for (Text key : map.keySet()) {
-            keys += key;
-        }
-        return keys;
-    }
-
     private String calculateMedian(Map<Integer, Double> map, String[] dataArray, double totalNumber) {
         int currentCount = 0;
         int iterations = 0;

@@ -19,7 +19,8 @@ public class CustomWritable implements Writable {
     private String questionFour = "0:0";
     private String questionFiveTotalHomes = "0";
     private String questionFiveHomeValues = "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0";
-    private String questionSix;
+    private String questionSixTotalRenters = "0";
+    private String questionSixRenterValues = "0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0";
     private String questionSeven;
     private String questionEight;
     private String questionNine;
@@ -34,6 +35,8 @@ public class CustomWritable implements Writable {
         questionFour = WritableUtils.readString(dataInput);
         questionFiveTotalHomes = WritableUtils.readString(dataInput);
         questionFiveHomeValues = WritableUtils.readString(dataInput);
+        questionSixTotalRenters = WritableUtils.readString(dataInput);
+        questionSixRenterValues = WritableUtils.readString(dataInput);
     }
 
     @Override
@@ -44,6 +47,8 @@ public class CustomWritable implements Writable {
         WritableUtils.writeString(dataOutput, questionFour);
         WritableUtils.writeString(dataOutput, questionFiveTotalHomes);
         WritableUtils.writeString(dataOutput, questionFiveHomeValues);
+        WritableUtils.writeString(dataOutput, questionSixTotalRenters);
+        WritableUtils.writeString(dataOutput, questionSixRenterValues);
     }
 
     public String getQuestionOne() {return questionOne;}
@@ -63,4 +68,9 @@ public class CustomWritable implements Writable {
 
     public String getQuestionFiveHomeValues() {return questionFiveHomeValues;}
     public void setQuestionFiveHomeValues(String questionFiveHomeValues) {this.questionFiveHomeValues = questionFiveHomeValues;}
+
+    public String getQuestionSixTotalRenters() {return questionSixTotalRenters;}
+    public void setQuestionSixTotalRenters(String questionSixTotalRenters) {this.questionSixTotalRenters = questionSixTotalRenters;}
+    public String getQuestionSixRenterValues() {return questionSixRenterValues;}
+    public void setQuestionSixRenterValues(String questionSixRenterValues) {this.questionSixRenterValues = questionSixRenterValues;}
 }

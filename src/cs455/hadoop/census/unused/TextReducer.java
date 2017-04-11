@@ -1,6 +1,7 @@
 package cs455.hadoop.census.unused;
 
 import cs455.hadoop.census.ranges.HouseRanges;
+import cs455.hadoop.census.ranges.RentRanges;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
@@ -26,9 +27,10 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
 
     @Override
     protected void reduce(Text key, Iterable<CustomWritable> values, Context context) throws IOException, InterruptedException {
-        Map<String, Double> rentRangeMap = new HashMap<>();
+        Map<Integer, Double> rentRangeMap = new TreeMap<>();
         Map<Integer, Double> houseRangeMap = new TreeMap<>();
         HouseRanges houseRanges = HouseRanges.getInstance();
+        RentRanges rentRanges = RentRanges.getInstance();
         double totalRent = 0;
         double totalOwn = 0;
         double totalPopulation = 0;
@@ -44,8 +46,10 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
         double ruralHouseholds = 0;
         double urbanHouseholds = 0;
         double totalHouses = 0;
+        double totalRentals = 0;
 
         Double[] homeDoubles = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+        Double[] rentDoubles = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
 
         for (CustomWritable cw : values) {
             totalRent += Double.parseDouble(cw.getQuestionOne().split(":")[0]);
@@ -71,10 +75,20 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
             for (int i = 0; i < intermediateStringData.length-1; i++) {
                 homeDoubles[i] += Double.parseDouble(intermediateStringData[i]);
             }
+
+            totalRentals += Double.parseDouble(cw.getQuestionSixTotalRenters());
+            intermediateStringData = cw.getQuestionSixRenterValues().split(":");
+            for (int i = 0; i < intermediateStringData.length-1; i++) {
+                rentDoubles[i] += Double.parseDouble(intermediateStringData[i]);
+            }
         }
 
         for (int i = 0; i < 20; i++) {
             houseRangeMap.put(houseRanges.getHousingIntegers()[i], homeDoubles[i]);
+        }
+
+        for (int i = 0; i < 17; i++) {
+            rentRangeMap.put(rentRanges.getIntegerRents()[i], rentDoubles[i]);
         }
 
         multipleOutputs.write("question1", key, new Text(
@@ -108,7 +122,10 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
                         "%"));
 
         multipleOutputs.write("question5", key, new Text(
-                " " + calculateMedian(houseRangeMap, HouseRanges.getInstance().getRanges(), totalHouses)));
+                " " + calculateMedian(houseRangeMap, houseRanges.getRanges(), totalHouses)));
+
+        multipleOutputs.write("question6", key, new Text(
+                " " + calculateMedian(rentRangeMap, rentRanges.getRanges(), totalRentals)));
 
     }
 
