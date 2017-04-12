@@ -93,13 +93,15 @@ public class QuestionNinePlot {
         if (splitLine.length == 9) {
             try {
                 for (int i = 0; i < splitLine.length; i++) {
-                    ruralPopulation.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[2]));
-                    childrenUnder12.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[3]));
-                    children12To17.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[4]));
-                    hispanicChildrenUnder12.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[5]));
-                    hispanicChildren12To17.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[6]));
-                    totalMales.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[7]));
-                    totalFemales.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[8]));
+                    if (!splitLine[0].equals("VI") && !splitLine[0].equals("PR")) {
+                        ruralPopulation.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[2]));
+                        childrenUnder12.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[3]));
+                        children12To17.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[4]));
+                        hispanicChildrenUnder12.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[5]));
+                        hispanicChildren12To17.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[6]));
+                        totalMales.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[7]));
+                        totalFemales.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[8]));
+                    }
                 }
             } catch (NumberFormatException nfe) {
                 //continue
