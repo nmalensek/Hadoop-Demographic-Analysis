@@ -9,6 +9,17 @@ import java.text.DecimalFormat;
 
 public class CensusDataCombiner extends Reducer<Text, MapMultiple, Text, MapMultiple> {
 
+    /**
+     * Reduces by defining each field and setting the value in a custom Writable object (MapMultiple).
+     * Combiner is used to reduce number of output files and make it easier to write each question answer
+     * to its own file.
+     * @param key state
+     * @param values custom Writable object
+     * @param context MapReduce context
+     * @throws IOException
+     * @throws InterruptedException
+     */
+
     @Override
     protected void reduce(Text key, Iterable<MapMultiple> values, Context context) throws IOException, InterruptedException {
         MapMultiple mapMultiple = new MapMultiple();

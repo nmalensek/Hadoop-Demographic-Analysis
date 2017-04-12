@@ -15,6 +15,15 @@ import java.util.StringTokenizer;
 
 public class CensusDataMapper extends Mapper<LongWritable, Text, Text, MapMultiple> {
 
+    /**
+     * Map program that splits text files and extracts relevant text values. Values are then set
+     * in a custom Writable object (MapMultiple).
+     * @param key state
+     * @param value text value of specified substring
+     * @param context MapReduce context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         final int analysisSummaryLevel = 100;

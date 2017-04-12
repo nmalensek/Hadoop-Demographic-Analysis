@@ -41,6 +41,11 @@ public class QuestionNinePlot {
         frameThree = new ApplicationFrame("Rural population's influence on male and female population");
     }
 
+    /**
+     * Checks for NA values that are inserted if average calculations return > 100% (now generally unused)
+     * @throws IOException
+     */
+
     private void checkForNA() throws IOException {
         BufferedReader checkReader = null;
         FileReader inputFileReader = new FileReader(filePath);
@@ -65,6 +70,11 @@ public class QuestionNinePlot {
         }
     }
 
+    /**
+     * Creates plots for each XYCollection by reading the specified file
+     * @throws IOException
+     */
+
     public void plotOutput() throws IOException {
         BufferedReader reader = null;
         FileReader plotFileReader = new FileReader(filePath);
@@ -86,6 +96,11 @@ public class QuestionNinePlot {
             plotFileReader.close();
         }
     }
+
+    /**
+     * Populates all XYSeries with data from the read file
+     * @param line
+     */
 
     private void addDataToChart(String line) {
         String[] splitLine = line.split(":");
@@ -109,6 +124,10 @@ public class QuestionNinePlot {
         }
     }
 
+    /**
+     * Adds each data series to their respective charts
+     */
+
     private void addDataToSeries() {
         data.addSeries(ruralPopulation);
         data.addSeries(childrenUnder12);
@@ -120,6 +139,13 @@ public class QuestionNinePlot {
         genderData.addSeries(totalMales);
         genderData.addSeries(totalFemales);
     }
+
+    /**
+     * Packages and displays the final charts
+     * @param data data to be displayed in the chart
+     * @param title title of chart
+     * @param currentFrame frame that displays chart
+     */
 
     private void createPlot(XYSeriesCollection data, String title, ApplicationFrame currentFrame) {
 

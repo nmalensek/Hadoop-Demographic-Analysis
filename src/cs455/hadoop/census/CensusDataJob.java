@@ -24,6 +24,12 @@ public class CensusDataJob {
 
     private static Configuration conf = new Configuration();
 
+    /**
+     * Executes map reduce job.
+     * @param args first argument is input path, second is output path, and third is desired behavior
+     *             (run the job or print results)
+     */
+
     private void executeJob(String[] args) {
         try {
             Path inputPath = new Path(args[0]);
@@ -72,13 +78,22 @@ public class CensusDataJob {
         }
     }
 
+    /**
+     * Parses result files and prints their contents.
+     * @param args main method argument output path
+     * @throws IOException
+     */
+
     private void printResults(String[] args) throws IOException {
         Path outputPath = new Path(args[1]);
         PrintResults printResults = new PrintResults(outputPath, conf);
         printResults.printOutput();
     }
 
-    //write each question in its own output folder
+    /**
+     * Write each question in its own output folder
+     * @param job Hadoop job
+     */
     private void addCustomDirectories(Job job) {
         MultipleOutputs.addNamedOutput(job, "question1", TextOutputFormat.class, Text.class, Text.class);
         MultipleOutputs.addNamedOutput(job, "question2", TextOutputFormat.class, Text.class, Text.class);

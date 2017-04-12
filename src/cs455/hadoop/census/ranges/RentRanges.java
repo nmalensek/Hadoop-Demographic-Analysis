@@ -25,7 +25,7 @@ public class RentRanges implements Ranges {
             "$750 - $999",
             "$1000 or more",
             "No cash rent"};
-
+    //required for simple ordering for median calculation using TreeMap
     Integer[] integerRents =
             {0,
             100,

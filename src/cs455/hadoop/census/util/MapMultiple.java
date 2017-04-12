@@ -95,7 +95,11 @@ public class MapMultiple implements Writable {
         this.maleNeverMarried = maleNeverMarried;
         this.femaleNeverMarried = femaleNeverMarried;
     }
-
+    /**
+     * Reads fields from file
+     * @param dataInput Hadoop data input
+     * @throws IOException
+     */
     //readFields and write must have the same order and contain all i/o variables!
     @Override
     public void readFields(DataInput dataInput) throws IOException {
@@ -184,6 +188,11 @@ public class MapMultiple implements Writable {
         hispanicChildren12To17 = dataInput.readDouble();
     }
 
+    /**
+     * Writes fields from file
+     * @param dataOutput Hadoop data output
+     * @throws IOException
+     */
     @Override
     public void write(DataOutput dataOutput) throws IOException {
         //q1

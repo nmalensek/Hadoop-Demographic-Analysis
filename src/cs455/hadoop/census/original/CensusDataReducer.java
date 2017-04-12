@@ -19,6 +19,12 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
     private List<Double> averageList = new ArrayList<>();
     private double currentMax = 0;
 
+    /**
+     * Writes answers to each question in their own files.
+     * @param context MapReduce context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public void setup(Context context) throws IOException, InterruptedException {
         multipleOutputs = new MultipleOutputs(context);
         multipleOutputs.write("question1", new Text("\nQuestion 1:\n" +
@@ -45,6 +51,16 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
                         "Does the amount of urban and rural population influence the population of children < 17 per state?"),
                 new Text(" \n"));
     }
+
+    /**
+     * Sums all values and sets the final values for each variable. Performs calculations as necessary and
+     * writes to output file.
+     * @param key state
+     * @param values MapMultiple objects that contain values for each state
+     * @param context MapReduce context
+     * @throws IOException
+     * @throws InterruptedException
+     */
 
     @Override
     protected void reduce(Text key, Iterable<MapMultiple> values, Context context) throws IOException, InterruptedException {
@@ -215,8 +231,11 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             hispanicChildren12To17 += val.getHispanicChildren12To17();
         }
 
+        //determine how many rooms exist in the state so average can be calculated
         Double[] roomArray = {oneRoom * 1, twoRooms * 2, threeRooms * 3, fourRooms * 4, fiveRooms * 5,
                 sixRooms * 6, sevenRooms * 7, eightRooms * 8, nineRooms * 9};
+
+        //calculate averages and add them to a list
 
         DecimalFormat dF = new DecimalFormat("##.00");
         double average = calculateAverageRooms(roomArray, totalRooms);
@@ -231,6 +250,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             averageList.add(averageRooms);
         }
 
+        //put home values into an array so they can be put into a map with the ranges
         Double[] homeValueArray = {ownedHomeValue0, ownedHomeValue1, ownedHomeValue2, ownedHomeValue3,
                 ownedHomeValue4, ownedHomeValue5, ownedHomeValue6, ownedHomeValue7, ownedHomeValue8, ownedHomeValue9,
                 ownedHomeValue10, ownedHomeValue11, ownedHomeValue12, ownedHomeValue13, ownedHomeValue14,
@@ -240,6 +260,7 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             houseRangeMap.put(houseRanges.getHousingIntegers()[i], homeValueArray[i]);
         }
 
+        //put rent values into an array so they can be put into a map with the ranges
         Double[] rentPaidArray = {rentValue0, rentValue1, rentValue2, rentValue3, rentValue4, rentValue5,
                 rentValue6, rentValue7, rentValue8, rentValue9, rentValue10, rentValue11, rentValue12,
                 rentValue13, rentValue14, rentValue15, rentValue16};
@@ -247,6 +268,8 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         for (int i = 0; i < 17; i++) {
             rentRangeMap.put(rentRanges.getIntegerRents()[i], rentPaidArray[i]);
         }
+
+        //write answers for each state
 
         multipleOutputs.write("question1", key, new Text(
                 " rent: " + calculatePercentage(totalRent, (totalRent + totalOwn)) + "% | own: "
@@ -296,7 +319,14 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         stateWithMostElderlyPeople(elderlyMap);
     }
 
-    //must close multiple outputs, otherwise the results might not be written to output files
+    /**
+     * Close multiple outputs, otherwise the results might not be written to output files.
+     * Also writes questions 7 and 8 because the answer only contains one data point instead of one
+     * for each state.
+     * @param context MapReduce context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     protected void cleanup(Context context) throws IOException, InterruptedException {
         //question 7 and 8 written here so only one value's output
@@ -308,6 +338,13 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         multipleOutputs.close();
     }
 
+    /**
+     * Calculate percentage, ignores answer if impossible number is calculated (VI and PR
+     * generally cause this)
+     * @param numerator
+     * @param denominator
+     * @return
+     */
     private String calculatePercentage(double numerator, double denominator) {
         DecimalFormat decimalFormat = new DecimalFormat("##.00");
         double percentage = (numerator / denominator) * 100;
@@ -317,6 +354,16 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             return decimalFormat.format(percentage);
         }
     }
+
+    /**
+     * Calculates median, returns N/A if no iterations were performed (no data was collected).
+     * The current count is tracked because this is calculating the median from ranges, not from
+     * each data point.
+     * @param map map of ranges (key) and quantity per range (value)
+     * @param dataArray array of ranges
+     * @param totalNumber total number of the variable that's being examined (home values or rent ranges)
+     * @return answer
+     */
 
     private String calculateMedian(Map<Integer, Double> map, String[] dataArray, double totalNumber) {
         int currentCount = 0;
@@ -358,6 +405,12 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
         return  actualRoomQuantity / totalHouses;
     }
 
+    /**
+     * Checks if the percentage of elderly population in the state is the most compared to all other
+     * states analyzed so far.
+     * @param stateElderlyMap Map of states' elderly population percentages
+     */
+
     private void stateWithMostElderlyPeople(Map<Text, Double> stateElderlyMap) {
         for (Text state : stateElderlyMap.keySet()) {
             if (stateElderlyMap.get(state) > currentMax) {
@@ -366,6 +419,13 @@ public class CensusDataReducer extends Reducer<Text, MapMultiple, Text, Text> {
             }
         }
     }
+
+    /**
+     * Calculates 95th percentile of the given list. If the result of list * .95 divides evenly,
+     * that number is the 95th percentile. Otherwise, the next result is in the 95th percentile.
+     * @param list list to calculate 95th percentile from
+     * @return
+     */
 
     private String calculateNinetyFifthPercentile(List<Double> list) {
         Collections.sort(list);

@@ -28,7 +28,7 @@ public class HouseRanges implements Ranges {
                         "$300,000 - $399,999",
                         "$400,000 - $499,999",
                         "$500,000 or more"};
-
+    //required for simple ordering for median calculation using TreeMap
     Integer[] housingIntegers =
             {0,
             15000,

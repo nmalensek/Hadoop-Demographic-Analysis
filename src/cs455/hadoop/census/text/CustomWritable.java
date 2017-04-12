@@ -27,6 +27,11 @@ public class CustomWritable implements Writable {
 
     public CustomWritable() {}
 
+    /**
+     * Reads fields from file
+     * @param dataInput Hadoop data input
+     * @throws IOException
+     */
     @Override
     public void readFields(DataInput dataInput) throws IOException {
         questionOne = WritableUtils.readString(dataInput);
@@ -43,6 +48,12 @@ public class CustomWritable implements Writable {
         questionEight = WritableUtils.readString(dataInput);
         questionNine = WritableUtils.readString(dataInput);
     }
+
+    /**
+     * Writes fields from file
+     * @param dataOutput Hadoop data output
+     * @throws IOException
+     */
 
     @Override
     public void write(DataOutput dataOutput) throws IOException {

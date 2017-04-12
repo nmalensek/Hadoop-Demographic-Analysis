@@ -7,6 +7,17 @@ import java.io.IOException;
 
 public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWritable> {
 
+    /**
+     * Reduces by defining each field and setting the combination of fields necessary
+     * to answer each question in a custom Writable object (CustomWritable class).
+     * Combiner is used to reduce number of output files and make it easier to write each question answer
+     * to its own file.
+     * @param key state
+     * @param values custom Writable object
+     * @param context MapReduce context
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     protected void reduce(Text key, Iterable<CustomWritable> values, Context context) throws IOException, InterruptedException {
         CustomWritable customWritable = new CustomWritable();
@@ -28,6 +39,7 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
         double ruralHouseholds = 0;
         double urbanHouseholds = 0;
 
+        //arrays filled with 0.0 to avoid null pointer exceptions
         double totalHouses = 0;
         String homeValues = "";
         Double[] homeDoubles = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};

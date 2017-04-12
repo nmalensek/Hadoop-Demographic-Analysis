@@ -19,6 +19,13 @@ public class PrintResults {
         fileSystem = FileSystem.get(configuration);
     }
 
+    /**
+     * Parses every file in the specified directory and prints their contents
+     * if they are an answer file for the Hadoop job. Question 9 is skipped
+     * because its results are meant to be shown graphically.
+     * @throws IOException
+     */
+
     public void printOutput() throws IOException {
         BufferedReader reader = null;
         try {
