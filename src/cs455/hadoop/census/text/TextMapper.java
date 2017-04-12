@@ -172,8 +172,12 @@ public class TextMapper extends Mapper<LongWritable, Text, Text, CustomWritable>
 
                 int hispanicChildren12To17 = hispanicMales12To17 + hispanicFemales12To17;
 
+                int totalMales = Integer.parseInt(line.substring(363, 372));
+                int totalFemales = Integer.parseInt(line.substring(372, 381));
+
                 customWritable.setQuestionNine(urbanPopulation + ":" + ruralPopulation + ":" + childrenUnder1To11 +
-                ":" + children12To17 + ":" + hispanicChildrenUnder1To11 + ":" + hispanicChildren12To17);
+                ":" + children12To17 + ":" + hispanicChildrenUnder1To11 + ":" + hispanicChildren12To17 +
+                ":" + totalMales + ":" + totalFemales);
             }
 
             if (logicalPartNumber == 2) {

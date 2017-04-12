@@ -25,15 +25,20 @@ public class QuestionNinePlot {
     private XYSeries children12To17 = new XYSeries("Non-hispanic children 12 - 17");
     private XYSeries hispanicChildrenUnder12 = new XYSeries("Hispanic children <= 11");
     private XYSeries hispanicChildren12To17 = new XYSeries("Hispanic children 12-17");
+    private XYSeries totalMales = new XYSeries("Total male population");
+    private XYSeries totalFemales = new XYSeries("Total female population");
     private ApplicationFrame frame;
     private ApplicationFrame frameTwo;
+    private ApplicationFrame frameThree;
     XYSeriesCollection data = new XYSeriesCollection();
     XYSeriesCollection hispanicData = new XYSeriesCollection();
+    XYSeriesCollection genderData= new XYSeriesCollection();
 
     public QuestionNinePlot(String inputFile) throws IOException {
         this.filePath = inputFile;
         frame = new ApplicationFrame("Rural population's influence on children's population");
         frameTwo = new ApplicationFrame("Rural population's influence on children's population");
+        frameThree = new ApplicationFrame("Rural population's influence on male and female population");
     }
 
     private void checkForNA() throws IOException {
@@ -75,6 +80,7 @@ public class QuestionNinePlot {
             addDataToSeries();
             createPlot(data, "Non-hispanic young population to rural population", frame);
             createPlot(hispanicData, "Hispanic young population to rural population", frameTwo);
+            createPlot(genderData, "Male/female population to rural population", frameThree);
         } finally {
             reader.close();
             plotFileReader.close();
@@ -84,7 +90,7 @@ public class QuestionNinePlot {
     private void addDataToChart(String line) {
         String[] splitLine = line.split(":");
         //ignore lines without relevant data
-        if (splitLine.length == 7) {
+        if (splitLine.length == 9) {
             try {
                 for (int i = 0; i < splitLine.length; i++) {
                     ruralPopulation.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[2]));
@@ -92,6 +98,8 @@ public class QuestionNinePlot {
                     children12To17.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[4]));
                     hispanicChildrenUnder12.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[5]));
                     hispanicChildren12To17.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[6]));
+                    totalMales.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[7]));
+                    totalFemales.add(stateStrings.convertStateStringToInt(splitLine[0]), Double.parseDouble(splitLine[8]));
                 }
             } catch (NumberFormatException nfe) {
                 //continue
@@ -106,6 +114,9 @@ public class QuestionNinePlot {
         hispanicData.addSeries(ruralPopulation);
         hispanicData.addSeries(hispanicChildrenUnder12);
         hispanicData.addSeries(hispanicChildren12To17);
+        genderData.addSeries(ruralPopulation);
+        genderData.addSeries(totalMales);
+        genderData.addSeries(totalFemales);
     }
 
     private void createPlot(XYSeriesCollection data, String title, ApplicationFrame currentFrame) {
@@ -121,9 +132,9 @@ public class QuestionNinePlot {
         xAxis.setRange(0, stateStrings.getStates().length - 1);
         plot.setDomainAxis(xAxis);
 
-        ChartPanel nonHispanicChartPanel = new ChartPanel(chart);
-        nonHispanicChartPanel.setPreferredSize(new java.awt.Dimension(1000, 500));
-        currentFrame.setContentPane(nonHispanicChartPanel);
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(1000, 500));
+        currentFrame.setContentPane(chartPanel);
         currentFrame.pack();
         RefineryUtilities.centerFrameOnScreen(currentFrame);
         currentFrame.setVisible(true);

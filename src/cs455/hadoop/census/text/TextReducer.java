@@ -41,7 +41,8 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
         multipleOutputs.write("question8", new Text("\nQuestion 8:\n" +
                 "State that has the highest percentage of people aged > 85"), new Text(" \n"));
         multipleOutputs.write("question9", new Text("\nQuestion 9:\n" +
-                        "Does the amount of urban and rural population influence the population of children < 17 per state?"),
+                        "Does the amount of urban and rural population influence the population of children < 17 or " +
+                        "the number of males/females per state?"),
                 new Text(" \n"));
     }
 
@@ -77,6 +78,8 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
         double children12To17 = 0;
         double hispanicChildrenUnder1To11 = 0;
         double hispanicChildren12To17 = 0;
+        double totalMales = 0;
+        double totalFemales = 0;
 
         Double[] homeDoubles = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
         Double[] rentDoubles = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
@@ -128,6 +131,8 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
             children12To17 += Double.parseDouble(cw.getQuestionNine().split(":")[3]);
             hispanicChildrenUnder1To11 += Double.parseDouble(cw.getQuestionNine().split(":")[4]);
             hispanicChildren12To17 += Double.parseDouble(cw.getQuestionNine().split(":")[5]);
+            totalMales += Double.parseDouble(cw.getQuestionNine().split(":")[6]);
+            totalFemales += Double.parseDouble(cw.getQuestionNine().split(":")[7]);
 
         }
 
@@ -199,7 +204,9 @@ public class TextReducer extends Reducer<Text, CustomWritable, Text, Text> {
                         ":" + calculatePercentage(childrenUnder1To11, totalPopulation) +
                         ":" + calculatePercentage(children12To17, totalPopulation) +
                         ":" + calculatePercentage(hispanicChildrenUnder1To11, totalPopulation) +
-                        ":" + calculatePercentage(hispanicChildren12To17, totalPopulation)));
+                        ":" + calculatePercentage(hispanicChildren12To17, totalPopulation) +
+                        ":" + calculatePercentage(totalMales, totalPopulation) +
+                        ":" + calculatePercentage(totalFemales, totalPopulation)));
 
         stateWithMostElderlyPeople(elderlyMap);
     }

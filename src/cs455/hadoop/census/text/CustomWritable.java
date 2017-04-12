@@ -23,7 +23,7 @@ public class CustomWritable implements Writable {
     private String questionSevenRoomsPerHouse = "0:0:0:0:0:0:0:0:0";
     private String questionSevenAverageRooms = "0";
     private String questionEight = "0:0";
-    private String questionNine = "0:0:0:0:0:0";
+    private String questionNine = "0:0:0:0:0:0:0:0";
 
     public CustomWritable() {}
 
@@ -87,8 +87,6 @@ public class CustomWritable implements Writable {
     public void setQuestionSevenDwellingsWithRooms(String questionSevenDwellingsWithRooms) {this.questionSevenDwellingsWithRooms = questionSevenDwellingsWithRooms;}
     public String getQuestionSevenRoomsPerHouse() {return questionSevenRoomsPerHouse;}
     public void setQuestionSevenRoomsPerHouse(String questionSevenRoomsPerHouse) {this.questionSevenRoomsPerHouse = questionSevenRoomsPerHouse;}
-    public String getQuestionSevenAverageRooms() {return questionSevenAverageRooms;}
-    public void setQuestionSevenAverageRooms(String questionSevenAverageRooms) {this.questionSevenAverageRooms = questionSevenAverageRooms;}
 
     public String getQuestionEight() {return questionEight;}
     public void setQuestionEight(String questionEight) {this.questionEight = questionEight;}

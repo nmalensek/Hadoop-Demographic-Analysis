@@ -46,6 +46,8 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
         double children12To17 = 0;
         double hispanicChildrenUnder1To11 = 0;
         double hispanicChildren12To17 = 0;
+        double totalMales = 0;
+        double totalFemales = 0;
 
         double elderlyPopulation = 0;
 
@@ -101,6 +103,8 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
             children12To17 += Double.parseDouble(intermediateStringData[3]);
             hispanicChildrenUnder1To11 += Double.parseDouble(intermediateStringData[4]);
             hispanicChildren12To17 += Double.parseDouble(intermediateStringData[5]);
+            totalMales += Double.parseDouble(intermediateStringData[6]);
+            totalFemales += Double.parseDouble(intermediateStringData[7]);
         }
 
         //q1
@@ -134,7 +138,8 @@ public class TextCombiner extends Reducer<Text, CustomWritable, Text, CustomWrit
         customWritable.setQuestionEight(elderlyPopulation + ":" + totalPopulation);
         //q9
         customWritable.setQuestionNine(urbanPopulation + ":" + ruralPopulation + ":" + childrenUnder1To11 + ":" +
-        children12To17 + ":" + hispanicChildrenUnder1To11 + ":" + hispanicChildren12To17);
+        children12To17 + ":" + hispanicChildrenUnder1To11 + ":" + hispanicChildren12To17 + ":" + totalMales +
+        ":" + totalFemales);
 
         context.write(key, customWritable);
     }
