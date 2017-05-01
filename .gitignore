@@ -6,4 +6,5 @@
 *.class
 conf/
 mapreduce successes/
-jfreechart-1.0.19/
+*.pdf
+*.docx
